@@ -1,0 +1,23 @@
+.dark_theme{
+  h1,h2,h3,h4,h5,h6, p,a,span, li{
+    color: #fff;
+  }
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.color_panel{
+  height: 150px;
+  background: rgba(gray, .4);
+}
+
+main{
+  height: calc(100vh - 238px);
+}
+
+footer{
+  height: 30px;
+  border-top: 1px solid black;
+}
