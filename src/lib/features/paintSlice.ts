@@ -3,12 +3,16 @@ import type {PayloadAction} from "@reduxjs/toolkit";
 
 interface IPaintSlice{
     imageData: string | null;
+    imagePath: string | null;
+    startSize: number;
     sizeWidth: number;
     sizeHeight: number;
 }
 
 const initialState: IPaintSlice = {
     imageData: null,
+    imagePath: null,
+    startSize: 800,
     sizeWidth: 800,
     sizeHeight: 800
 }
@@ -23,10 +27,13 @@ export const paintSlice = createSlice({
         updateSizeInFooter:(state, action: PayloadAction<number>) => {
             state.sizeWidth = action.payload;
             state.sizeHeight = action.payload;
-        }
+        },
+        setPath: (state, action: PayloadAction<string>) => {
+            state.imagePath = action.payload;
+        },
 
     }
 });
 
-export const {updateSizeInFooter, createImageData} = paintSlice.actions;
+export const {setPath, updateSizeInFooter, createImageData} = paintSlice.actions;
 export default paintSlice.reducer;

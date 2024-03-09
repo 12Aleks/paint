@@ -1,23 +1,131 @@
-.dark_theme{
-  h1,h2,h3,h4,h5,h6, p,a,span, li{
-    color: #fff;
+
+.navbar {
+  .dropdown-toggle::after {
+    display: none !important;
   }
 }
 
-.dropdown-toggle::after {
-  display: none !important;
-}
-
-.color_panel{
+.color_panel {
   height: 150px;
-  background: rgba(gray, .4);
 }
 
-main{
-  height: calc(100vh - 238px);
+main {
+  height: calc(100vh - 248px);
+  padding: 15px;
+  overflow-x: auto;
+  display: grid;
+  place-items: center;
+
+  img {
+
+  }
 }
 
-footer{
-  height: 30px;
+footer {
+  height: 40px;
   border-top: 1px solid black;
+  font-size: 12px;
+  i {
+    font-size: 14px;
+    position: relative;
+    &.bi-cursor{
+      transform: scaleX(-1);
+    }
+    &.bi-fullscreen:after {
+      content: '';
+      position: absolute;
+      top: 49%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      width: 8px;
+      height: 8px;
+      border: 1px solid white;
+    }
+  }
+
+  button.dropdown-toggle {
+    font-size: 12px;
+    border-radius: 5px;
+    min-width: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  ul.dropdown-menu, li, .dropdown-item {
+    color: white;
+    background: #212529;
+    border-color: #888;
+    max-width: 100px;
+    font-size: 12px;
+  }
+
+  ul.dropdown-menu {
+    border-radius: 5px;
+
+    .dropdown-item {
+      &:hover, &:focus {
+        background: #888;
+      }
+    }
+  }
+
+  input[type="range"] {
+    //-webkit-appearance: none;
+    //appearance: none;
+    height: 5px;
+    background-color: #888;
+    border-radius: 2px;
+    cursor: pointer;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: cornflowerblue;
+      border: 4px solid #555;
+      cursor: pointer;
+    }
+  }
 }
+
+.dark_theme {
+  //scroll style
+  ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1e1d1d; /* Color of the track */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the thumb */
+    border-radius: 6px; /* Rounded corners */
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker color when hovered */
+  }
+  //end scroll style
+
+
+  h1, h2, h3, h4, h5, h6, p, a, span, li, i {
+    color: #fff;
+  }
+
+  .color_panel{
+    background: rgba(gray, .4);
+  }
+}
+
+
+
+
+
+
+

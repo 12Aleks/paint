@@ -20,7 +20,7 @@ const Navbar= () => {
 
 
     return (
-        <div className="p-2 border-0">
+        <div className="p-2 border-0 navbar">
             <div className="d-grid d-inline-flex gap-1">
                 <div className="dropdown">
                     <button className="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
