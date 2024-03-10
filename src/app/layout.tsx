@@ -6,9 +6,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import './styles/scss.scss'
 import Navbar from "@/app/components/Navbar";
-import ColorPanel from "@/app/components/ColorPanel";
 import StoreProvider from "@/app/StoreProvider";
 import Footer from "@/app/components/Footer";
+import ControlPanel from "@/app/components/ControlPanel";
 
 
 const inter = Inter({subsets: ["latin"]});
@@ -29,7 +29,7 @@ export default function RootLayout({children}: Readonly<{ children: ReactNode}>)
             <div className="row">
                 <StoreProvider>
                     <Navbar/>
-                    <ColorPanel/>
+                    <ControlPanel/>
                     {children}
                     <Footer/>
                 </StoreProvider>

@@ -1,10 +1,12 @@
 import {configureStore} from "@reduxjs/toolkit";
 import paintSlice from "./features/paintSlice";
+import cursorSlice from "@/lib/features/cursorSlice";
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
-           data: paintSlice
+           data: paintSlice,
+           cursorData: cursorSlice
         },
     })
 };
