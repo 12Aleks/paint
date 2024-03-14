@@ -1,10 +1,12 @@
 import React from 'react';
 
 const ToolsBlock = () => {
-    const icons = ['bi-pencil-fill', 'bi-paint-bucket', 'bi-fonts', 'bi-eraser', 'bi-eyedropper', 'bi-zoom-in']
+    const icons = ['bi-pencil-fill', 'bi-paint-bucket', 'bi-fonts', 'bi-eraser', 'bi-eyedropper', 'bi-zoom-in',
+        // 'bi-superscript'
+    ]
 
     return (
-        <div className="tools_block d-inline-flex flex-column h-100">
+        <div className="tools_block d-inline-flex flex-column h-100 border-start border-2-secondary ms-3">
             <div className="wrapper">
             {
                 icons.map(icon =>

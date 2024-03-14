@@ -8,7 +8,7 @@
 .control_panel {
   height: 150px;
 
-  .tools_block, .color_block {
+  .tools_block, .color_block, .size_block {
     padding: 15px;
     font-size: 14px;
     letter-spacing: 1px;
@@ -40,7 +40,23 @@
       }
     }
   }
-
+  .size_block{
+    .dropdown-toggle{
+      height: 90px;
+      padding: 5px;
+      img{
+        position: relative;
+        display: block;
+        bottom: 0;
+        fill: white;
+      }
+      &:after {
+        position: relative;
+        top: 0;
+        color: white;
+      }
+    }
+  }
   .color_block {
     .firstColor, .secondColor {
       width: 30px;
