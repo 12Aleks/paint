@@ -1,14 +1,16 @@
 "use client"
 import Image from 'next/image';
 import React, { useState } from 'react';
+import {useAppDispatch} from "@/lib/hooks";
+import {updateCursorSize} from "@/lib/features/cursorSlice";
 
 const SizeBlock = () => {
     let size = [1, 3, 5, 8];
-    const [selectedSize, setSelectedSize] = useState(0);
+    const dispatch = useAppDispatch();
 
-    const sizeChangeInPercent = (per: number) => {
-        console.log(per);
-        setSelectedSize(per);
+
+    const changeSize = (size: number) => {
+        dispatch(updateCursorSize(size))
     };
 
     return (
@@ -18,17 +20,15 @@ const SizeBlock = () => {
                 <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <Image width={30} height={30} alt="icon" src="/line-weight.svg" />
                 </button>
-                <ul
-                    className="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                >
-                    {size.map((percent) => (
-                        <li key={percent}>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {size.map((el) => (
+                        <li key={el}>
                             <button
-                                className="dropdown-item"
+                                className="dropdown-item d-flex align-items-center"
                                 type="button"
-                                onClick={() => sizeChangeInPercent(percent)}
+                                onClick={() => changeSize(el)}
                             >
-                                {percent}%
+                                {el}px <div className="bg-light w-100 ms-2" style={{height: el}}></div>
                             </button>
                         </li>
                     ))}

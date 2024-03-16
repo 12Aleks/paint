@@ -36,6 +36,7 @@ const Canvas = () => {
 
         if (event.buttons !== 1 || !ctx) return;
         ctx.strokeStyle = cursorData.colorFirst;
+        ctx.lineWidth = cursorData.cursorSize;
         ctx.lineTo(x, y);
         ctx.stroke();
         dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
@@ -73,7 +74,7 @@ const Canvas = () => {
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            className="position-absolute top-0 left-0 right-0 bottom-0"
+            className={`position-absolute top-0 left-0 right-0 bottom-0 ${cursorData.mode}`}
         />
     );
 };

@@ -9,7 +9,9 @@ interface ICursorSlice{
     colorFirst: string;
     colorSecond: string;
     drawing: Point[];
-    picker: string
+    picker: string;
+    cursorSize: number;
+    mode: string
 }
 
 const initialState:ICursorSlice = {
@@ -19,6 +21,8 @@ const initialState:ICursorSlice = {
     colorSecond: 'white',
     drawing: [],
     picker: 'violet',
+    cursorSize: 1,
+    mode: 'bi-pencil-fill'
 }
 export const cursorSlice = createSlice({
     name: 'cursor',
@@ -37,9 +41,15 @@ export const cursorSlice = createSlice({
         },
         updateDrawing: (state, action: PayloadAction<Point[]>) => {
             state.drawing = action.payload;
+        },
+        updateCursorSize: (state, action: PayloadAction<number>) => {
+            state.cursorSize = action.payload
+        },
+        updateMode: (state, action: PayloadAction<string>) => {
+            state.mode = action.payload
         }
     }
 })
 
-export const {setPosition,  updateDrawing ,updateCursorMainColor} = cursorSlice.actions;
+export const {setPosition,updateMode,updateCursorSize,   updateDrawing ,updateCursorMainColor} = cursorSlice.actions;
 export default cursorSlice.reducer

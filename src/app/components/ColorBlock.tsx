@@ -25,7 +25,7 @@ const ColorBlock = () => {
     }
 
     return (
-        <div className="color_block d-inline-flex flex-column h-100 border-start border-2-secondary ms-3">
+        <div className="color_block d-inline-flex flex-column h-100 border-start border-2-secondary">
             <div className="d-flex align-items-center">
                 <div className="me-4">
                     <div className="firstColor"

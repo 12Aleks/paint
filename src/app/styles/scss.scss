@@ -1,3 +1,5 @@
+$text-color: #f8f9fa;
+
 
 .navbar {
   .dropdown-toggle::after {
@@ -5,10 +7,13 @@
   }
 }
 
+
+
+
 .control_panel {
   height: 150px;
 
-  .tools_block, .color_block, .size_block {
+  .tools_block, .color_block, .size_block, .image_block {
     padding: 15px;
     font-size: 14px;
     letter-spacing: 1px;
@@ -41,8 +46,19 @@
     }
   }
   .size_block{
+    ul.dropdown-menu, li, button.dropdown-item {
+      background: #6e6e6e;
+      font-size: 14px;
+      color: $text-color;
+    }
+
+    .dropdown-item:hover, .dropdown-item:focus{
+      background: #888;
+      border-left: 3px solid darkblue;
+    }
+
     .dropdown-toggle{
-      height: 90px;
+      height: 75px;
       padding: 5px;
       img{
         position: relative;
@@ -52,8 +68,8 @@
       }
       &:after {
         position: relative;
-        top: 0;
-        color: white;
+        margin: 0 auto;
+        color: $text-color;
       }
     }
   }
@@ -107,13 +123,16 @@ main {
   place-items: center;
 
   img, canvas {
-    &:hover {
+    &:hover, &:active {
       cursor: crosshair;
     }
-    &:active {
-      cursor: crosshair;
+    &.bi-paint-bucket{
+      &:hover, &:active {
+        cursor: url("../images/cursors/bi-paint-bucket.svg"), auto;
+      }
     }
   }
+
 }
 
 footer {
@@ -142,7 +161,7 @@ footer {
       border-radius: 50%;
       width: 8px;
       height: 8px;
-      border: 1px solid white;
+      border: 1px solid $text-color;
     }
   }
 
@@ -156,8 +175,8 @@ footer {
   }
 
   ul.dropdown-menu, li, .dropdown-item {
-    color: white;
     background: #212529;
+    color: $text-color;
     border-color: #888;
     max-width: 100px;
     font-size: 12px;
@@ -218,7 +237,7 @@ footer {
 
 
   h1, h2, h3, h4, h5, h6, p, a, span, li, i {
-    color: #fff;
+    color: $text-color;
   }
 
   .control_panel {
