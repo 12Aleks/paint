@@ -17,8 +17,8 @@ interface ICursorSlice{
 const initialState:ICursorSlice = {
     positionX: 0,
     positionY: 0,
-    colorFirst: 'black',
-    colorSecond: 'white',
+    colorFirst: '#000000',
+    colorSecond: '#ffffff',
     drawing: [],
     picker: 'violet',
     cursorSize: 1,

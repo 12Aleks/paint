@@ -3,10 +3,10 @@ import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {updateCursorMainColor} from "@/lib/features/cursorSlice";
 import {useState} from "react";
 
-const colors = ['black', 'gray', 'darkred', 'red', 'orange', 'yellow', 'green', 'turquoise',
-    'indigo', 'purple', 'white', 'lightgray', 'brown',
-    'pink', 'gold', 'lightyellow', 'lime',
-    'paleturquoise', 'slategray', 'lavender'];
+const colors = ['#000000', '#808080', '#8b0000', '#ff0000', '#ffa500', '#ffff00', '#008000', '#40e0d0',
+    '#4b0082', '#800080', '#ffffff', '#d3d3d3', '#a52a2a',
+    '#ffc0cb', '#ffd700', '#ffffe0', '#00ff00',
+    '#afeeee', '#708090', '#e6e6fa'];
 
 const ColorBlock = () => {
     const dispatch = useAppDispatch();

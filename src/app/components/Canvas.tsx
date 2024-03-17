@@ -1,6 +1,8 @@
 import { MouseEvent, MouseEventHandler, useEffect, useRef } from 'react';
-import {setPosition, updateDrawing} from "@/lib/features/cursorSlice";
+import {setPosition, updateDrawing, updateCursorMainColor} from "@/lib/features/cursorSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import {floodFill} from "@/mods/fill";
+import {getColor} from "@/mods/picker";
 
 
 const Canvas = () => {
@@ -35,11 +37,13 @@ const Canvas = () => {
         const y = Math.round(event.clientY - (rect?.top || 0));
 
         if (event.buttons !== 1 || !ctx) return;
+        if (cursorData.mode.includes('bi-pencil-fill')) {
         ctx.strokeStyle = cursorData.colorFirst;
         ctx.lineWidth = cursorData.cursorSize;
         ctx.lineTo(x, y);
         ctx.stroke();
         dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+        }
         dispatch(setPosition([x, y]))
     }
 
@@ -57,14 +61,23 @@ const Canvas = () => {
         const y = Math.round(event.clientY - (rect?.top || 0));
 
         if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) return;
-        ctx.strokeStyle = cursorData.colorFirst;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x, y);
-        ctx.stroke();
-        dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+        if (cursorData.mode.includes('bi-pencil-fill')) {
+            ctx.strokeStyle = cursorData.colorFirst;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+        }else if (cursorData.mode.includes('bi-paint-bucket')) {
+            floodFill(ctx, x, y, cursorData.colorFirst);
+        }else if (cursorData.mode.includes('bi-eyedropper')){
+            const color = getColor(ctx, x, y);
+            dispatch(updateCursorMainColor([true, color]))
+        }
+
         dispatch(setPosition([x, y]));
     };
+
 
     return (
         <canvas
