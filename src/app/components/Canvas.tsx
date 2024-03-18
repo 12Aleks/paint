@@ -1,8 +1,9 @@
-import { MouseEvent, MouseEventHandler, useEffect, useRef } from 'react';
+import { WheelEvent, MouseEvent, MouseEventHandler, useEffect, useRef } from 'react';
 import {setPosition, updateDrawing, updateCursorMainColor} from "@/lib/features/cursorSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {floodFill} from "@/mods/fill";
 import {getColor} from "@/mods/picker";
+import {eraserCanvas} from "@/mods/eraser";
 
 
 const Canvas = () => {
@@ -29,6 +30,9 @@ const Canvas = () => {
         }
     }, [data.imageData]);
 
+
+
+
     const handleMouseMove: MouseEventHandler<HTMLCanvasElement> = (event) => {
         const canvas = canvasRef.current;
         const ctx = canvas?.getContext('2d')!;
@@ -43,6 +47,8 @@ const Canvas = () => {
         ctx.lineTo(x, y);
         ctx.stroke();
         dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+        }else if(cursorData.mode.includes('bi-eraser')){
+            eraserCanvas(ctx, x, y, cursorData.cursorSize)
         }
         dispatch(setPosition([x, y]))
     }
@@ -53,6 +59,7 @@ const Canvas = () => {
     };
 
     const handleMouseDown = (event: MouseEvent<HTMLCanvasElement>) => {
+        console.log(cursorData.mode)
         const canvas = canvasRef.current;
         if (!canvas) return;
         const ctx = canvas?.getContext('2d')!;
@@ -73,6 +80,18 @@ const Canvas = () => {
         }else if (cursorData.mode.includes('bi-eyedropper')){
             const color = getColor(ctx, x, y);
             dispatch(updateCursorMainColor([true, color]))
+        }else if(cursorData.mode.includes('bi-eraser')){
+            eraserCanvas(ctx, x, y, cursorData.cursorSize)
+        }else if(cursorData.mode.includes('bi-zoom-in')){
+            console.log('zoom')
+            // const scale = 1.1;
+            // const newWidth = canvas.width * scale;
+            // const newHeight = canvas.height * scale;
+            // canvas.width = newWidth;
+            // canvas.height = newHeight;
+            // ctx.drawImage(canvas, 0, 0, newWidth, newHeight);
+
+
         }
 
         dispatch(setPosition([x, y]));
@@ -87,6 +106,7 @@ const Canvas = () => {
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
+
             className={`position-absolute top-0 left-0 right-0 bottom-0 ${cursorData.mode}`}
         />
     );

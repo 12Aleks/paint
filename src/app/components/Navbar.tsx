@@ -53,6 +53,7 @@ const Navbar= () => {
                     </ul>
                 </div>
             </div>
+            <i className="bi bi-gear-wide"></i>
         </div>
     );
 };

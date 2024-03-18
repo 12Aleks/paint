@@ -2,7 +2,7 @@
 
 import ToolIcon from "@/app/components/ToolIcon";
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
-import {updateMode} from "@/lib/features/cursorSlice";
+import {updateCursorSize, updateMode} from "@/lib/features/cursorSlice";
 
 const ToolsBlock = () => {
     const dispatch = useAppDispatch();
@@ -13,6 +13,12 @@ const ToolsBlock = () => {
 
     const changeMode = (icon: string) => {
         dispatch(updateMode(icon))
+        if(icon.includes('bi-pencil-fill')){
+            dispatch(updateCursorSize(1))
+        }else if(icon.includes('bi-eraser')){
+            dispatch(updateCursorSize(8))
+        }
+
     }
 
     return (

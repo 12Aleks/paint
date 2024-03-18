@@ -140,6 +140,16 @@ main {
         cursor: url("../images/cursors/bi-eyedrpper.svg"), auto;
       }
     }
+    &.bi-zoom-in{
+      &:hover, &:active {
+        cursor: url("../images/cursors/bi-zoom-in.svg"), auto;
+      }
+    }
+    &.bi-eraser{
+      &:hover, &:active {
+        cursor: url("../images/cursors/bi-eraser.svg"), auto;
+      }
+    }
   }
 
 }
