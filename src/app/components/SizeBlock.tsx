@@ -14,7 +14,7 @@ const SizeBlock = () => {
     };
 
     const dispatch = useAppDispatch();
-    const cursorData = useAppSelector(state => state.cursorData)
+    const cursorData = useAppSelector(state => state.cursorData);
 
 
     const changeSize = (size: number) => {
@@ -26,10 +26,12 @@ const SizeBlock = () => {
             <div className="wrapper">
                 <div className="dropdown">
                     <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                            disabled={!Object.keys(size).includes(cursorData.mode)}
+                            aria-expanded='false'
+                            data-bs-toggle="dropdown" >
                         <Image width={30} height={30} alt="icon" src="/line-weight.svg"/>
                     </button>
-                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <ul className={`dropdown-menu ${!Object.keys(size).includes(cursorData.mode) ? '' : '_show'}`} aria-labelledby="dropdownMenuButton">
                         {size[cursorData.mode]?.map((el) => (
                             <li key={el}>
                                 <button
