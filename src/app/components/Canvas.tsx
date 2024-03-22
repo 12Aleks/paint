@@ -1,9 +1,10 @@
-import { WheelEvent, MouseEvent, MouseEventHandler, useEffect, useRef } from 'react';
+import { MouseEvent, MouseEventHandler, useEffect, useRef } from 'react';
 import {setPosition, updateDrawing, updateCursorMainColor} from "@/lib/features/cursorSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {floodFill} from "@/mods/fill";
 import {getColor} from "@/mods/picker";
 import {eraserCanvas} from "@/mods/eraser";
+import {zoomPlus} from "@/mods/zoom";
 
 
 const Canvas = () => {
@@ -42,6 +43,7 @@ const Canvas = () => {
 
         if (event.buttons !== 1 || !ctx) return;
         if (cursorData.mode.includes('bi-pencil-fill')) {
+        ctx.imageSmoothingEnabled = false;
         ctx.strokeStyle = cursorData.colorFirst;
         ctx.lineWidth = cursorData.cursorSize;
         ctx.lineTo(x, y);
@@ -59,7 +61,6 @@ const Canvas = () => {
     };
 
     const handleMouseDown = (event: MouseEvent<HTMLCanvasElement>) => {
-        console.log(cursorData.mode)
         const canvas = canvasRef.current;
         if (!canvas) return;
         const ctx = canvas?.getContext('2d')!;
@@ -83,15 +84,7 @@ const Canvas = () => {
         }else if(cursorData.mode.includes('bi-eraser')){
             eraserCanvas(ctx, x, y, cursorData.cursorSize)
         }else if(cursorData.mode.includes('bi-zoom-in')){
-            console.log('zoom')
-            // const scale = 1.1;
-            // const newWidth = canvas.width * scale;
-            // const newHeight = canvas.height * scale;
-            // canvas.width = newWidth;
-            // canvas.height = newHeight;
-            // ctx.drawImage(canvas, 0, 0, newWidth, newHeight);
-
-
+            zoomPlus(ctx, canvas)
         }
 
         dispatch(setPosition([x, y]));
