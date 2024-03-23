@@ -23,7 +23,32 @@ $button-active-gray: #757575;
       gap: 8px;
     }
   }
-
+  .image_block, .tools_block{
+    i{
+      font-size: 18px;
+    }
+  }
+  .image_block{
+    .dropdown-toggle{
+      &:after {
+        margin-left: 5px;
+        color: $text-color;
+      }
+    }
+    ul.dropdown-menu{
+      background: #212529;
+      color: #f8f9fa;
+      i{
+        font-size: 12px;
+        line-height: 20px;
+        letter-spacing: 1px;
+        &:before{
+          font-size: 16px;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
   .tools_block {
     .wrapper {
       grid-template-columns: repeat(3, 18px);
@@ -42,9 +67,6 @@ $button-active-gray: #757575;
         }
         &.active{
           border: 2px solid cornflowerblue;
-        }
-        i{
-          font-size: 18px;
         }
       }
     }

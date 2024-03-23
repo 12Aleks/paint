@@ -1,5 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import type {PayloadAction} from "@reduxjs/toolkit";
+import {RefObject} from "react";
 
 interface IPaintSlice{
     imageData: string | null;
@@ -7,6 +8,7 @@ interface IPaintSlice{
     startSize: number;
     sizeWidth: number;
     sizeHeight: number;
+    flip: string;
 }
 
 const initialState: IPaintSlice = {
@@ -14,7 +16,8 @@ const initialState: IPaintSlice = {
     imagePath: null,
     startSize: 800,
     sizeWidth: 800,
-    sizeHeight: 800
+    sizeHeight: 800,
+    flip: '',
 }
 
 export const paintSlice = createSlice({
@@ -31,9 +34,16 @@ export const paintSlice = createSlice({
         setPath: (state, action: PayloadAction<string>) => {
             state.imagePath = action.payload;
         },
+        flipVertical: (state, action: PayloadAction<string>) => {
+            state.flip = action.payload
+        },
+
+        flipHorizontal: (state, action: PayloadAction<string>) => {
+            state.flip = action.payload
+        }
 
     }
 });
 
-export const {setPath, updateSizeInFooter, createImageData} = paintSlice.actions;
+export const {  flipHorizontal, flipVertical,setPath, updateSizeInFooter, createImageData} = paintSlice.actions;
 export default paintSlice.reducer;

@@ -1,10 +1,11 @@
-import { MouseEvent, MouseEventHandler, useEffect, useRef } from 'react';
+import {MouseEvent, MouseEventHandler, useEffect, useRef} from 'react';
 import {setPosition, updateDrawing, updateCursorMainColor} from "@/lib/features/cursorSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {floodFill} from "@/mods/fill";
 import {getColor} from "@/mods/picker";
 import {eraserCanvas} from "@/mods/eraser";
 import {zoomPlus} from "@/mods/zoom";
+import {flipHorizontal, flipVertical} from "@/mods/flip";
 
 
 const Canvas = () => {
@@ -32,8 +33,6 @@ const Canvas = () => {
     }, [data.imageData]);
 
 
-
-
     const handleMouseMove: MouseEventHandler<HTMLCanvasElement> = (event) => {
         const canvas = canvasRef.current;
         const ctx = canvas?.getContext('2d')!;
@@ -43,13 +42,13 @@ const Canvas = () => {
 
         if (event.buttons !== 1 || !ctx) return;
         if (cursorData.mode.includes('bi-pencil-fill')) {
-        ctx.imageSmoothingEnabled = false;
-        ctx.strokeStyle = cursorData.colorFirst;
-        ctx.lineWidth = cursorData.cursorSize;
-        ctx.lineTo(x, y);
-        ctx.stroke();
-        dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
-        }else if(cursorData.mode.includes('bi-eraser')){
+            ctx.imageSmoothingEnabled = false;
+            ctx.strokeStyle = cursorData.colorFirst;
+            ctx.lineWidth = cursorData.cursorSize;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            dispatch(updateDrawing([...cursorData.drawing, {x, y}]));
+        } else if (cursorData.mode.includes('bi-eraser')) {
             eraserCanvas(ctx, x, y, cursorData.cursorSize)
         }
         dispatch(setPosition([x, y]))
@@ -75,20 +74,27 @@ const Canvas = () => {
             ctx.moveTo(x, y);
             ctx.lineTo(x, y);
             ctx.stroke();
-            dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
-        }else if (cursorData.mode.includes('bi-paint-bucket')) {
+            dispatch(updateDrawing([...cursorData.drawing, {x, y}]));
+        } else if (cursorData.mode.includes('bi-paint-bucket')) {
             floodFill(ctx, x, y, cursorData.colorFirst);
-        }else if (cursorData.mode.includes('bi-eyedropper')){
+        } else if (cursorData.mode.includes('bi-eyedropper')) {
             const color = getColor(ctx, x, y);
             dispatch(updateCursorMainColor([true, color]))
-        }else if(cursorData.mode.includes('bi-eraser')){
+        } else if (cursorData.mode.includes('bi-eraser')) {
             eraserCanvas(ctx, x, y, cursorData.cursorSize)
-        }else if(cursorData.mode.includes('bi-zoom-in')){
+        } else if (cursorData.mode.includes('bi-zoom-in')) {
             zoomPlus(ctx, canvas)
         }
 
         dispatch(setPosition([x, y]));
     };
+
+
+    useEffect(() => {
+        console.log(data.flip)
+        data.flip.includes('horizontal') && flipHorizontal(canvasRef);
+        data.flip.includes('vertical') && flipVertical(canvasRef);
+    }, [data.flip]);
 
 
     return (
@@ -99,7 +105,6 @@ const Canvas = () => {
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-
             className={`position-absolute top-0 left-0 right-0 bottom-0 ${cursorData.mode}`}
         />
     );
