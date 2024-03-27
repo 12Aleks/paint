@@ -1,4 +1,4 @@
-import {MouseEvent, MouseEventHandler, useEffect, useRef} from 'react';
+import {MouseEvent, MouseEventHandler, useEffect, useRef, useState} from 'react';
 import {setPosition, updateDrawing, updateCursorMainColor} from "@/lib/features/cursorSlice";
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {floodFill} from "@/mods/fill";
@@ -6,6 +6,10 @@ import {getColor} from "@/mods/picker";
 import {eraserCanvas} from "@/mods/eraser";
 import {zoomPlus} from "@/mods/zoom";
 import {flipHorizontal, flipVertical} from "@/mods/flip";
+import {rotateCanvas} from "@/mods/rotate";
+import {updateRotate} from "@/lib/features/paintSlice";
+import {renderText} from "@/mods/text";
+import Modal from "@/app/components/Modal";
 
 
 const Canvas = () => {
@@ -31,6 +35,16 @@ const Canvas = () => {
             img.src = data.imageData;
         }
     }, [data.imageData]);
+
+    useEffect(() => {
+        data.flip.includes('horizontal') && flipHorizontal(canvasRef);
+        data.flip.includes('vertical') && flipVertical(canvasRef);
+    }, [data.flip]);
+
+    useEffect(() => {
+        data.rotate && rotateCanvas(canvasRef, data.rotate);
+        dispatch(updateRotate(0))
+    }, [data.rotate]);
 
 
     const handleMouseMove: MouseEventHandler<HTMLCanvasElement> = (event) => {
@@ -84,17 +98,12 @@ const Canvas = () => {
             eraserCanvas(ctx, x, y, cursorData.cursorSize)
         } else if (cursorData.mode.includes('bi-zoom-in')) {
             zoomPlus(ctx, canvas)
+        } else if (cursorData.mode.includes('bi-fonts')) {
+            renderText(cursorData.colorFirst, ctx, data.textInput, x, y);
         }
 
         dispatch(setPosition([x, y]));
     };
-
-
-    useEffect(() => {
-        console.log(data.flip)
-        data.flip.includes('horizontal') && flipHorizontal(canvasRef);
-        data.flip.includes('vertical') && flipVertical(canvasRef);
-    }, [data.flip]);
 
 
     return (

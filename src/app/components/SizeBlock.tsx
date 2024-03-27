@@ -1,6 +1,5 @@
 "use client"
 import Image from 'next/image';
-import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {updateCursorSize} from "@/lib/features/cursorSlice";
 

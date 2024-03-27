@@ -9,6 +9,8 @@ interface IPaintSlice{
     sizeWidth: number;
     sizeHeight: number;
     flip: string;
+    rotate: number;
+    textInput: string
 }
 
 const initialState: IPaintSlice = {
@@ -18,6 +20,8 @@ const initialState: IPaintSlice = {
     sizeWidth: 800,
     sizeHeight: 800,
     flip: '',
+    rotate: 0,
+    textInput: ''
 }
 
 export const paintSlice = createSlice({
@@ -40,10 +44,18 @@ export const paintSlice = createSlice({
 
         flipHorizontal: (state, action: PayloadAction<string>) => {
             state.flip = action.payload
-        }
+        },
+
+        updateRotate: (state, acttion: PayloadAction<number>) => {
+            state.rotate = acttion.payload
+        },
+
+        updateTextInput: (state, action: PayloadAction<string>) => {
+            state.textInput = action.payload
+        },
 
     }
 });
 
-export const {  flipHorizontal, flipVertical,setPath, updateSizeInFooter, createImageData} = paintSlice.actions;
+export const {  updateTextInput, updateRotate, flipHorizontal, flipVertical,setPath, updateSizeInFooter, createImageData} = paintSlice.actions;
 export default paintSlice.reducer;
