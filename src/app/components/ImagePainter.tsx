@@ -15,16 +15,18 @@ const ImagePainter = () => {
     };
 
     return (
-        <div className='position-relative overflow-hidden w-100 h-100'>
-            <Canvas/>
+        <>
             <Modal show={cursorData.mode.includes('bi-fonts')}/>
-            {data.imageData && <img
-                src={data.imageData}
-                width={data.sizeWidth}
-                height={data.sizeHeight}
-                onLoad={() => data.imageData && setImagePath(data.imageData)}
-                alt="Painted Image" />}
-        </div>
+            <div className='position-relative overflow-hidden'>
+                <Canvas/>
+                {data.imageData && <img
+                    src={data.imageData}
+                    width={data.sizeWidth}
+                    height={data.sizeHeight}
+                    onLoad={() => data.imageData && setImagePath(data.imageData)}
+                    alt="Painted Image"/>}
+            </div>
+        </>
     );
 };
 
