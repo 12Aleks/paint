@@ -1,4 +1,4 @@
-import {MouseEvent, MouseEventHandler, useEffect, useRef, useState} from 'react';
+import {FC, MouseEvent, MouseEventHandler, useEffect, useRef, useState} from 'react';
 import {setPosition, updateDrawing, updateCursorMainColor} from "@/lib/features/cursorSlice";
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {floodFill} from "@/mods/fill";
@@ -7,12 +7,14 @@ import {eraserCanvas} from "@/mods/eraser";
 import {zoomPlus} from "@/mods/zoom";
 import {flipHorizontal, flipVertical} from "@/mods/flip";
 import {rotateCanvas} from "@/mods/rotate";
-import {updateRotate} from "@/lib/features/paintSlice";
+import {updateRotate, updateTextInput} from "@/lib/features/paintSlice";
 import {renderText} from "@/mods/text";
-import Modal from "@/app/components/Modal";
 
 
-const Canvas = () => {
+interface ICanvas{
+    dragOffset: { x: number; y: number };
+}
+const Canvas: FC<ICanvas> = ({dragOffset}) => {
     const dispatch = useAppDispatch();
     const data = useAppSelector(state => state.data);
     const cursorData = useAppSelector(state => state.cursorData);
@@ -104,9 +106,25 @@ const Canvas = () => {
 
         dispatch(setPosition([x, y]));
     };
+    const handleCanvasDragOver: MouseEventHandler<HTMLCanvasElement> = (event) => {
+        event.preventDefault();
+    };
 
+    const handleCanvasDrop: MouseEventHandler<HTMLCanvasElement> = (event) => {
+        event.preventDefault();
+        if (data.textInput.trim() !== "") {
+            const canvas = canvasRef.current;
+            const ctx = canvas?.getContext('2d')!;
+            const rect = canvas?.getBoundingClientRect();
+            const x = event.clientX - (rect?.left || 0) - dragOffset.x;
+            const y = event.clientY - (rect?.top || 0) - dragOffset.y;
+            renderText(cursorData.colorFirst, ctx, data.textInput, x, y);
+            dispatch(updateTextInput(''))
+        }
+    };
 
     return (
+
         <canvas
             ref={canvasRef}
             width={data.sizeWidth}
@@ -115,7 +133,10 @@ const Canvas = () => {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             className={`position-absolute top-0 left-0 right-0 bottom-0 ${cursorData.mode}`}
+            onDragOver={handleCanvasDragOver}
+            onDrop={handleCanvasDrop}
         />
+
     );
 };
 

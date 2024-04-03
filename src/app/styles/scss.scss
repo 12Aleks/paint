@@ -8,6 +8,45 @@ $button-active-gray: #757575;
   }
 }
 
+.tools_block, .modal_overlay, footer {
+  .wrapper {
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 35px;
+      height: 35px;
+      border-radius: 5px;
+      transition: background-color .5s;
+
+      &:hover, &.active {
+        background-color: $button-active-gray;
+        transition: background-color .5s;
+      }
+
+      &.active {
+        border: 2px solid cornflowerblue;
+      }
+    }
+  }
+  ul.dropdown-menu, li, .dropdown-item {
+    background: #212529;
+    color: $text-color;
+    border-color: $button-active-gray;
+    letter-spacing: 1px;
+    font-size: 12px;
+  }
+
+  ul.dropdown-menu {
+    border-radius: 5px;
+
+    .dropdown-item {
+      &:hover, &:focus {
+        background: $button-active-gray;
+      }
+    }
+  }
+}
 
 .control_panel {
   height: 150px;
@@ -65,25 +104,6 @@ $button-active-gray: #757575;
     .wrapper {
       grid-template-columns: repeat(3, 18px);
       column-gap: 25px;
-
-      div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 35px;
-        height: 35px;
-        border-radius: 5px;
-        transition: background-color .5s;
-
-        &:hover, &.active {
-          background-color: $button-active-gray;
-          transition: background-color .5s;
-        }
-
-        &.active {
-          border: 2px solid cornflowerblue;
-        }
-      }
     }
   }
 
@@ -170,6 +190,7 @@ main {
   display: grid;
   place-items: center;
 
+
   img, canvas {
     &:hover, &:active {
       cursor: crosshair;
@@ -242,21 +263,7 @@ footer {
   }
 
   ul.dropdown-menu, li, .dropdown-item {
-    background: #212529;
-    color: $text-color;
-    border-color: $button-active-gray;
     max-width: 100px;
-    font-size: 12px;
-  }
-
-  ul.dropdown-menu {
-    border-radius: 5px;
-
-    .dropdown-item {
-      &:hover, &:focus {
-        background: $button-active-gray;
-      }
-    }
   }
 
   input[type="range"] {
@@ -311,9 +318,6 @@ footer {
   }
 }
 
-
-
-
 .modal_overlay {
   position: absolute;
   display: none;
@@ -334,13 +338,20 @@ footer {
       border-radius: 8px;
       padding: 5px;
       .modal_body {
-
+        i{
+          font-size: 22px;
+        }
       }
     }
   }
 }
 
-
+.inputTextMode, .inputTextMode:focus {
+  border:0;
+  outline:0;
+  box-shadow: none;
+  background-color: transparent;
+}
 
 
 
