@@ -8,11 +8,29 @@ interface IShow {
     show: boolean
 }
 
+const fontSize: number[] = [8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72];
+const fontName : string[] = [
+    'Arial',
+    'Arial Black',
+    'Comic Sans MS',
+    'Courier New',
+    'Georgia',
+    'Impact',
+    'Lucida Console',
+    'Lucida Sans Unicode',
+    'Palatino Linotype',
+    'Tahoma',
+    'Times New Roman',
+    'Trebuchet MS',
+    'Verdana',
+    'Webdings',
+    'Wingdings'
+];
+
 const Modal: FC<IShow> = ({show}) => {
     const data = useAppSelector(state => state.data);
     const dispatch = useAppDispatch();
-    const fontSize: number[] = [8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72];
-    const fontName : string[] = ['Calibri']
+
 
     function setTextInput(e: string) {
         dispatch(updateTextInput(e))

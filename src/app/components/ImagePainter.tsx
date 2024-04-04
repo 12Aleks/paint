@@ -4,7 +4,7 @@ import React, { useState,  MouseEventHandler } from 'react';
 import { setPath } from "@/lib/features/paintSlice";
 import Canvas from "@/app/components/Canvas";
 import Modal from "@/app/components/Modal";
-import DragDropInput from "@/app/components/DragDropInput";
+import TextArea from "@/app/components/TextArea";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 interface ImagePainterProps {}
@@ -38,11 +38,12 @@ const ImagePainter: React.FC<ImagePainterProps> = () => {
             <Modal show={cursorData.mode.includes('bi-fonts')}/>
             <div className='position-relative overflow-hidden'>
                 <Canvas dragOffset={dragOffset}/>
-                <DragDropInput
+                <TextArea
                     isDragging={isDragging}
                     dragOffset={dragOffset}
                     position={inputPosition}
                     setPosition={setInputPosition}
+                    show={cursorData.mode.includes('bi-fonts')}
                 />
                 {data.imageData && <img
                     src={data.imageData}

@@ -219,6 +219,11 @@ main {
         cursor: url("../images/cursors/bi-eraser.svg"), auto;
       }
     }
+    &.bi-fonts {
+      &:hover, &:active {
+        cursor: text;
+      }
+    }
   }
 
 }
@@ -317,17 +322,18 @@ footer {
 
   }
 }
-
+.modal_overlay, .inputTextMode {
+  display: none;
+  &.show{
+    display: block;
+  }
+}
 .modal_overlay {
   position: absolute;
-  display: none;
   top: 2px;
   width: 800px;
   margin: 0 auto;
   height: 50px;
-  &.show{
-    display: block;
-  }
   .modal_wrapper {
     max-width: 800px;
     width: 100%;
@@ -345,12 +351,18 @@ footer {
     }
   }
 }
+//textarea.textMode::-webkit-resizer{
+//    display: none;
+//}
 
-.inputTextMode, .inputTextMode:focus {
-  border:0;
-  outline:0;
+textarea.textMode, .textMode:focus {
+  //-moz-appearance: textfield;
+  //-webkit-appearance: textfield;
+  border: 0;
+  outline: 0;
   box-shadow: none;
   background-color: transparent;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='black' stroke-width='1' stroke-dasharray='5' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
 }
 
 
