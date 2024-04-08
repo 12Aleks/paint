@@ -1,8 +1,8 @@
 import {FC} from 'react';
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {updateTextInput} from "@/lib/features/paintSlice";
-import {updateMode} from "@/lib/features/cursorSlice";
-import {linkGc} from "next/dist/client/app-link-gc";
+import {updateFontFamily, updateFontSize, updateTextFormat} from "@/lib/features/cursorSlice";
+
 
 interface IShow {
     show: boolean
@@ -28,7 +28,7 @@ const fontName : string[] = [
 ];
 
 const Modal: FC<IShow> = ({show}) => {
-    const data = useAppSelector(state => state.data);
+    const cursorData = useAppSelector(state => state.cursorData);
     const dispatch = useAppDispatch();
 
 
@@ -37,10 +37,10 @@ const Modal: FC<IShow> = ({show}) => {
     }
 
     function changeFontSize(size: number){
-        console.log(size)
+        dispatch(updateFontSize(size))
     }
-    function changeFontName(name: string){
-        console.log(name)
+    function changeFontFamily(name: string){
+        dispatch(updateFontFamily(name))
     }
 
     console.log(show)
@@ -53,23 +53,23 @@ const Modal: FC<IShow> = ({show}) => {
                             <div className="dropdown w-75 me-2">
                                 <button className="btn btn-dark dropdown-toggle border-secondary w-100 d-flex justify-content-between align-items-center" type="button"
                                         id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    {fontName.at(0)}
+                                    {cursorData.fontFamily}
                                 </button>
                                 <ul className="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                                     {fontName.map(name => (
                                         <li key={name}>
                                             <button className="dropdown-item" type="button"
-                                                    onClick={() => changeFontName(name)}>
+                                                    onClick={() => changeFontFamily(name)}>
                                                 {name}
                                             </button>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
-                            <div className="dropdown w-25 ">
+                            <div className="dropdown w-25">
                                 <button className="btn btn-dark dropdown-toggle border-secondary w-100" type="button"
                                         id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    {fontSize.at(0)} px
+                                    {cursorData.fontSize} px
                                 </button>
                                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     {fontSize.map(size => (

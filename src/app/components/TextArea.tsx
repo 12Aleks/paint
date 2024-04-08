@@ -12,6 +12,7 @@ interface DragDropInputProps {
 
 const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition, dragOffset, show }) => {
     const data = useAppSelector(state => state.data);
+    const cursorData = useAppSelector(state => state.cursorData);
     const dispatch = useAppDispatch()
 
     const handleTextInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => { // Change to HTMLTextAreaElement
@@ -45,7 +46,14 @@ const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition, d
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             className={`textMode ${show ? 'show' : ''}`}
-            style={{ position: 'absolute', left: position.x, top: position.y }}
+            style={{ maxHeight: data.sizeHeight,
+                      maxWidth: data.sizeWidth,
+                      left: position.x,
+                      top: position.y,
+                      fontSize: cursorData.fontSize,
+                      fontFamily: cursorData.fontFamily,
+                      fontWeight: cursorData.textFormat
+           }}
         />
     );
 };

@@ -101,7 +101,7 @@ const Canvas: FC<ICanvas> = ({dragOffset}) => {
         } else if (cursorData.mode.includes('bi-zoom-in')) {
             zoomPlus(ctx, canvas)
         } else if (cursorData.mode.includes('bi-fonts')) {
-            renderText(cursorData.colorFirst, ctx, data.textInput, x, y);
+            renderText(cursorData, ctx, data.textInput, x, y );
         }
 
         dispatch(setPosition([x, y]));
@@ -118,7 +118,7 @@ const Canvas: FC<ICanvas> = ({dragOffset}) => {
             const rect = canvas?.getBoundingClientRect();
             const x = event.clientX - (rect?.left || 0) - dragOffset.x;
             const y = event.clientY - (rect?.top || 0) - dragOffset.y;
-            renderText(cursorData.colorFirst, ctx, data.textInput, x, y);
+            renderText(cursorData, ctx, data.textInput, x, y);
             dispatch(updateTextInput(''))
         }
     };
