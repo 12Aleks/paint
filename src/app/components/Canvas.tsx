@@ -13,8 +13,9 @@ import {renderText} from "@/mods/text";
 
 interface ICanvas{
     dragOffset: { x: number; y: number };
+    position: { x: number; y: number };
 }
-const Canvas: FC<ICanvas> = ({dragOffset}) => {
+const Canvas: FC<ICanvas> = ({dragOffset, position}) => {
     const dispatch = useAppDispatch();
     const data = useAppSelector(state => state.data);
     const cursorData = useAppSelector(state => state.cursorData);
@@ -101,7 +102,8 @@ const Canvas: FC<ICanvas> = ({dragOffset}) => {
         } else if (cursorData.mode.includes('bi-zoom-in')) {
             zoomPlus(ctx, canvas)
         } else if (cursorData.mode.includes('bi-fonts')) {
-            renderText(cursorData, ctx, data.textInput, x, y );
+            renderText(cursorData, ctx, data.textInput, position.x, position.y );
+
         }
 
         dispatch(setPosition([x, y]));

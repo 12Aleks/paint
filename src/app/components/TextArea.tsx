@@ -52,7 +52,9 @@ const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition, d
                       top: position.y,
                       fontSize: cursorData.fontSize,
                       fontFamily: cursorData.fontFamily,
-                      fontWeight: cursorData.textFormat
+                      fontWeight: cursorData.textFormat,
+                      lineHeight: cursorData.fontSize + 'px',
+                      color: cursorData.colorFirst
            }}
         />
     );
