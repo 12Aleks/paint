@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {updateTextInput} from "@/lib/features/paintSlice";
-import {updateFontFamily, updateFontSize, updateTextFormat} from "@/lib/features/cursorSlice";
+import {updateFontFamily, updateFontSize, updateTextDecoration} from "@/lib/features/cursorSlice";
 
 
 interface IShow {
@@ -27,6 +27,8 @@ const fontName : string[] = [
     'Wingdings'
 ];
 
+const textDecorations: string[] = ['bold', 'italic', 'underline', 'strikethrough']
+
 const Modal: FC<IShow> = ({show}) => {
     const cursorData = useAppSelector(state => state.cursorData);
     const dispatch = useAppDispatch();
@@ -43,7 +45,11 @@ const Modal: FC<IShow> = ({show}) => {
         dispatch(updateFontFamily(name))
     }
 
-    console.log(show)
+    function changeTextDecoration(format: string){
+        console.log(format)
+        dispatch(updateTextDecoration(format))
+    }
+
     return (
         <div className={`modal_overlay ${show ? 'show' : ''}`}>
             <div className="modal_wrapper">
@@ -83,20 +89,16 @@ const Modal: FC<IShow> = ({show}) => {
                                 </ul>
                             </div>
                         </div>
-                        <div
-                            className="w-25 d-flex justify-content-between border-start border-2-secondary ps-2 pe-2 wrapper">
-                            <div>
-                                <i className="bi bi-type-bold"></i>
-                            </div>
-                            <div>
-                                <i className="bi bi-type-italic"></i>
-                            </div>
-                            <div>
-                                <i className="bi bi-type-underline"></i>
-                            </div>
-                            <div>
-                                <i className="bi bi-type-strikethrough"></i>
-                            </div>
+                        <div className="w-25 d-flex justify-content-between
+                             border-start border-2-secondary ps-2 pe-2 wrapper">
+                            {
+                                textDecorations.map(icon =>
+                                    <div key={icon}>
+                                        <i className={`bi bi-type-${icon}`}
+                                           onClick={() => changeTextDecoration(icon)}/>
+                                    </div>
+                                )
+                            }
                         </div>
                         <div className="w-25 d-flex justify-content-between border-start border-2-secondary ps-2 pe-2 wrapper">
                             <div>

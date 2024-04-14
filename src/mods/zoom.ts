@@ -21,7 +21,6 @@ const zoom = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, scale: n
     ctx.scale(scale, scale);
     ctx.drawImage(tempCanvas, 0, 0, newWidth, newHeight);
     ctx.restore();
-    console.log(tempCanvas.width)
     tempCanvas.remove();
 };
 

@@ -13,8 +13,9 @@ export interface ICursorSlice{
     cursorSize: number;
     mode: string,
     fontFamily: string,
-    fontSize: number
-    textFormat: string
+    fontSize: number,
+    textDecoration: string,
+    textArea: boolean
 }
 
 const initialState:ICursorSlice = {
@@ -27,8 +28,9 @@ const initialState:ICursorSlice = {
     cursorSize: 1,
     mode: 'bi-pencil-fill',
     fontFamily: 'Arial',
-    fontSize: 8,
-    textFormat: 'normal'
+    fontSize: 11,
+    textDecoration: 'normal',
+    textArea: false
 }
 export const cursorSlice = createSlice({
     name: 'cursor',
@@ -60,12 +62,15 @@ export const cursorSlice = createSlice({
         updateFontSize: (state, action: PayloadAction<number>) => {
             state.fontSize= action.payload
         },
-        updateTextFormat: (state, action: PayloadAction<string>) => {
-            state.textFormat = action.payload
+        updateTextDecoration: (state, action: PayloadAction<string>) => {
+            state.textDecoration = action.payload
+        },
+        updateTextArea: (state, action: PayloadAction<boolean>) => {
+            state.textArea = action.payload
         }
 
     }
 })
 
-export const {updateTextFormat, updateFontSize, updateFontFamily, setPosition,updateMode,updateCursorSize,   updateDrawing ,updateCursorMainColor} = cursorSlice.actions;
+export const { updateTextArea,updateTextDecoration, updateFontSize, updateFontFamily, setPosition,updateMode,updateCursorSize,   updateDrawing ,updateCursorMainColor} = cursorSlice.actions;
 export default cursorSlice.reducer

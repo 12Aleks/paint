@@ -1,5 +1,5 @@
-import {FC, MouseEvent, MouseEventHandler, useEffect, useRef, useState} from 'react';
-import {setPosition, updateDrawing, updateCursorMainColor} from "@/lib/features/cursorSlice";
+import {Dispatch, FC, MouseEvent, MouseEventHandler, SetStateAction, useEffect, useRef, useState} from 'react';
+import {setPosition, updateDrawing, updateCursorMainColor, updateTextArea} from "@/lib/features/cursorSlice";
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {floodFill} from "@/mods/fill";
 import {getColor} from "@/mods/picker";
@@ -14,8 +14,9 @@ import {renderText} from "@/mods/text";
 interface ICanvas{
     dragOffset: { x: number; y: number };
     position: { x: number; y: number };
+    changeTextPosition: Dispatch<SetStateAction<{ x: number; y: number }>>;
 }
-const Canvas: FC<ICanvas> = ({dragOffset, position}) => {
+const Canvas: FC<ICanvas> = ({dragOffset, position, changeTextPosition}) => {
     const dispatch = useAppDispatch();
     const data = useAppSelector(state => state.data);
     const cursorData = useAppSelector(state => state.cursorData);
@@ -48,6 +49,10 @@ const Canvas: FC<ICanvas> = ({dragOffset, position}) => {
         data.rotate && rotateCanvas(canvasRef, data.rotate);
         dispatch(updateRotate(0))
     }, [data.rotate]);
+
+    useEffect(() => {
+        dispatch(updateTextArea(cursorData.mode.includes('bi-fonts')))
+    }, [cursorData.mode] )
 
 
     const handleMouseMove: MouseEventHandler<HTMLCanvasElement> = (event) => {
@@ -103,7 +108,9 @@ const Canvas: FC<ICanvas> = ({dragOffset, position}) => {
             zoomPlus(ctx, canvas)
         } else if (cursorData.mode.includes('bi-fonts')) {
             renderText(cursorData, ctx, data.textInput, position.x, position.y );
-
+            dispatch(updateTextInput(''))
+            dispatch(updateTextArea(!cursorData.textArea))
+            !cursorData.textArea && changeTextPosition({x , y})
         }
 
         dispatch(setPosition([x, y]));

@@ -37,13 +37,16 @@ const ImagePainter: React.FC<ImagePainterProps> = () => {
         <>
             <Modal show={cursorData.mode.includes('bi-fonts')}/>
             <div className='position-relative overflow-hidden'>
-                <Canvas dragOffset={dragOffset}  position={inputPosition}/>
+                <Canvas dragOffset={dragOffset}
+                        position={inputPosition}
+                        changeTextPosition={setInputPosition}
+                />
                 <TextArea
                     isDragging={isDragging}
                     dragOffset={dragOffset}
                     position={inputPosition}
                     setPosition={setInputPosition}
-                    show={cursorData.mode.includes('bi-fonts')}
+                    show={cursorData.textArea}
                 />
                 {data.imageData && <img
                     src={data.imageData}

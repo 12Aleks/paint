@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, FC, ChangeEvent, DragEvent } from 'react'
+import {Dispatch, SetStateAction, FC, ChangeEvent, DragEvent, useEffect} from 'react'
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { updateTextInput } from "@/lib/features/paintSlice";
 
@@ -24,6 +24,10 @@ const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition, d
             event.dataTransfer.setData('text/plain', ''); // Necessary for Firefox
         }
     };
+
+    useEffect(() => {
+        !show && setPosition({ x: 0, y: 0 });
+    }, [show])
 
     const handleDragEnd = (event: DragEvent<HTMLTextAreaElement>) => { // Change to HTMLTextAreaElement
         let maxX = data.sizeWidth - event.currentTarget.offsetWidth;
@@ -52,7 +56,9 @@ const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition, d
                       top: position.y,
                       fontSize: cursorData.fontSize,
                       fontFamily: cursorData.fontFamily,
-                      fontWeight: cursorData.textFormat,
+                      fontWeight: cursorData.textDecoration,
+                      textDecoration: cursorData.textDecoration,
+                      fontStyle: cursorData.textDecoration,
                       lineHeight: cursorData.fontSize + 'px',
                       color: cursorData.colorFirst
            }}
