@@ -13,7 +13,6 @@ const ImagePainter: React.FC<ImagePainterProps> = () => {
     const dispatch = useAppDispatch();
     const data = useAppSelector(state => state.data);
     const cursorData = useAppSelector(state => state.cursorData);
-    const [dragOffset, setDragOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const [inputPosition, setInputPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
@@ -21,29 +20,15 @@ const ImagePainter: React.FC<ImagePainterProps> = () => {
         dispatch(setPath(imagePath));
     };
 
-    const handleTextInputDragStart: MouseEventHandler<HTMLInputElement> = (event) => {
-        setIsDragging(true);
-        setDragOffset({
-            x: event.clientX - event.currentTarget.getBoundingClientRect().left,
-            y: event.clientY - event.currentTarget.getBoundingClientRect().top
-        });
-    };
-
-    const handleTextInputDragEnd = () => {
-        setIsDragging(false);
-    };
 
     return (
         <>
             <Modal show={cursorData.mode.includes('bi-fonts')}/>
             <div className='position-relative overflow-hidden'>
-                <Canvas dragOffset={dragOffset}
-                        position={inputPosition}
+                <Canvas position={inputPosition}
                         changeTextPosition={setInputPosition}
                 />
-                <TextArea
-                    isDragging={isDragging}
-                    dragOffset={dragOffset}
+                <TextArea isDragging={isDragging}
                     position={inputPosition}
                     setPosition={setInputPosition}
                     show={cursorData.textArea}

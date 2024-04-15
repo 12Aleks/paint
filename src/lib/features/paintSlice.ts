@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import type {PayloadAction} from "@reduxjs/toolkit";
-import {RefObject} from "react";
+
 
 interface IPaintSlice{
     imageData: string | null;

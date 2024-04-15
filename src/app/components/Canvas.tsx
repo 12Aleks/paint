@@ -12,11 +12,11 @@ import {renderText} from "@/mods/text";
 
 
 interface ICanvas{
-    dragOffset: { x: number; y: number };
+    // dragOffset: { x: number; y: number };
     position: { x: number; y: number };
     changeTextPosition: Dispatch<SetStateAction<{ x: number; y: number }>>;
 }
-const Canvas: FC<ICanvas> = ({dragOffset, position, changeTextPosition}) => {
+const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
     const dispatch = useAppDispatch();
     const data = useAppSelector(state => state.data);
     const cursorData = useAppSelector(state => state.cursorData);
@@ -51,7 +51,7 @@ const Canvas: FC<ICanvas> = ({dragOffset, position, changeTextPosition}) => {
     }, [data.rotate]);
 
     useEffect(() => {
-        dispatch(updateTextArea(cursorData.mode.includes('bi-fonts')))
+        !cursorData.mode.includes('bi-fonts') && dispatch(updateTextArea(false))
     }, [cursorData.mode] )
 
 
@@ -115,25 +115,9 @@ const Canvas: FC<ICanvas> = ({dragOffset, position, changeTextPosition}) => {
 
         dispatch(setPosition([x, y]));
     };
-    const handleCanvasDragOver: MouseEventHandler<HTMLCanvasElement> = (event) => {
-        event.preventDefault();
-    };
 
-    const handleCanvasDrop: MouseEventHandler<HTMLCanvasElement> = (event) => {
-        event.preventDefault();
-        if (data.textInput.trim() !== "") {
-            const canvas = canvasRef.current;
-            const ctx = canvas?.getContext('2d')!;
-            const rect = canvas?.getBoundingClientRect();
-            const x = event.clientX - (rect?.left || 0) - dragOffset.x;
-            const y = event.clientY - (rect?.top || 0) - dragOffset.y;
-            renderText(cursorData, ctx, data.textInput, x, y);
-            dispatch(updateTextInput(''))
-        }
-    };
 
     return (
-
         <canvas
             ref={canvasRef}
             width={data.sizeWidth}
@@ -142,10 +126,7 @@ const Canvas: FC<ICanvas> = ({dragOffset, position, changeTextPosition}) => {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             className={`position-absolute top-0 left-0 right-0 bottom-0 ${cursorData.mode}`}
-            onDragOver={handleCanvasDragOver}
-            onDrop={handleCanvasDrop}
         />
-
     );
 };
 

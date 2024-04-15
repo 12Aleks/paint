@@ -1,7 +1,13 @@
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {updateTextInput} from "@/lib/features/paintSlice";
-import {updateFontFamily, updateFontSize, updateTextDecoration} from "@/lib/features/cursorSlice";
+import {
+    updateFonStyle,
+    updateFontFamily,
+    updateFontSize,
+    updateFontWeight,
+    updateTextDecoration
+} from "@/lib/features/cursorSlice";
 
 
 interface IShow {
@@ -32,6 +38,7 @@ const textDecorations: string[] = ['bold', 'italic', 'underline', 'strikethrough
 const Modal: FC<IShow> = ({show}) => {
     const cursorData = useAppSelector(state => state.cursorData);
     const dispatch = useAppDispatch();
+    const [active, setActive] = useState<string[]>([])
 
 
     function setTextInput(e: string) {
@@ -45,9 +52,18 @@ const Modal: FC<IShow> = ({show}) => {
         dispatch(updateFontFamily(name))
     }
 
-    function changeTextDecoration(format: string){
-        console.log(format)
-        dispatch(updateTextDecoration(format))
+    function changeTextDecoration(format: string) {
+        const index = active.indexOf(format);
+        if (index === -1) {
+            setActive([...active, format]);
+        } else {
+            const newActive = [...active];
+            newActive.splice(index, 1);
+            setActive(newActive);
+        }
+        format.includes('underline') ? dispatch(updateTextDecoration(format)) : dispatch(updateTextDecoration(''));
+        format.includes('bold') ? dispatch(updateFontWeight(format)): dispatch(updateFontWeight('normal'))
+        format.includes('italic') ? dispatch(updateFonStyle(format)): dispatch(updateFonStyle('normal'))
     }
 
     return (
@@ -93,7 +109,7 @@ const Modal: FC<IShow> = ({show}) => {
                              border-start border-2-secondary ps-2 pe-2 wrapper">
                             {
                                 textDecorations.map(icon =>
-                                    <div key={icon}>
+                                    <div key={icon} className={active.includes(icon)? 'active': ''}>
                                         <i className={`bi bi-type-${icon}`}
                                            onClick={() => changeTextDecoration(icon)}/>
                                     </div>
