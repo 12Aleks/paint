@@ -21,7 +21,8 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
     const data = useAppSelector(state => state.data);
     const cursorData = useAppSelector(state => state.cursorData);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-
+    const [origin, setOrigin] = useState<{ x: number; y: number } | null>(null);
+    const [currentPosition, setCurrentPosition] = useState<{ x: number; y: number } | null>(null);
 
     useEffect(() => {
         if (data.imageData) {
@@ -72,6 +73,14 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
             dispatch(updateDrawing([...cursorData.drawing, {x, y}]));
         } else if (cursorData.mode.includes('bi-eraser')) {
             eraserCanvas(ctx, x, y, cursorData.cursorSize)
+        }else if (cursorData.mode.includes('search')) {
+            if (!origin) return;
+            const canvas = canvasRef.current;
+            if (!canvas) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.round(event.clientX - rect.left);
+            const y = Math.round(event.clientY - rect.top);
+            setCurrentPosition({ x, y });
         }
         dispatch(setPosition([x, y]))
     }
@@ -111,11 +120,44 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
             dispatch(updateTextInput(''))
             dispatch(updateTextArea(!cursorData.textArea))
             !cursorData.textArea && changeTextPosition({x , y})
+        }else if (cursorData.mode.includes('search')) {
+            const canvas = canvasRef.current;
+            if (!canvas) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.round(event.clientX - rect.left);
+            const y = Math.round(event.clientY - rect.top);
+            setOrigin({ x, y });
         }
 
         dispatch(setPosition([x, y]));
     };
 
+    const handleMouseUp: MouseEventHandler<HTMLCanvasElement> = () => {
+        if (!origin || !currentPosition) return;
+        // Perform actions with the selected rectangle, if needed
+        setOrigin(null);
+        setCurrentPosition(null);
+    };
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        if (origin && currentPosition) {
+            ctx.strokeStyle = "#ff0000";
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.rect(
+                origin.x,
+                origin.y,
+                currentPosition.x - origin.x,
+                currentPosition.y - origin.y
+            );
+            ctx.stroke();
+        }
+    }, [origin, currentPosition]);
 
     return (
         <canvas
@@ -125,6 +167,7 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
+            onMouseUp={handleMouseUp}
             className={`position-absolute top-0 left-0 right-0 bottom-0 ${cursorData.mode}`}
         />
     );

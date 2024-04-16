@@ -35,7 +35,7 @@ const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition,  
                       fontSize: cursorData.fontSize,
                       fontFamily: cursorData.fontFamily,
                       fontWeight: cursorData.fontWeight,
-                      textDecoration: cursorData.textDecoration,
+                      textDecoration: cursorData.textDecoration || cursorData.textStrikethrough && 'line-through' ,
                       fontStyle: cursorData.fonStyle,
                       lineHeight: cursorData.fontSize + 'px',
                       color: cursorData.colorFirst

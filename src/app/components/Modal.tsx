@@ -6,7 +6,7 @@ import {
     updateFontFamily,
     updateFontSize,
     updateFontWeight,
-    updateTextDecoration
+    updateTextDecoration, updateTextStrikethrough
 } from "@/lib/features/cursorSlice";
 
 
@@ -64,6 +64,7 @@ const Modal: FC<IShow> = ({show}) => {
         format.includes('underline') ? dispatch(updateTextDecoration(format)) : dispatch(updateTextDecoration(''));
         format.includes('bold') ? dispatch(updateFontWeight(format)): dispatch(updateFontWeight('normal'))
         format.includes('italic') ? dispatch(updateFonStyle(format)): dispatch(updateFonStyle('normal'))
+        format.includes('strikethrough') ? dispatch(updateTextStrikethrough(format)): dispatch(updateTextStrikethrough('normal'))
     }
 
     return (

@@ -19,7 +19,8 @@ export interface ICursorSlice {
     fonStyle: string,
     fontWeight: string,
     textDecoration: string,
-    textArea: boolean
+    textArea: boolean,
+    textStrikethrough: string
 }
 
 const initialState: ICursorSlice = {
@@ -36,6 +37,7 @@ const initialState: ICursorSlice = {
     fonStyle: 'normal',
     fontWeight: 'normal',
     textDecoration: '',
+    textStrikethrough: '',
     textArea: false
 }
 export const cursorSlice = createSlice({
@@ -79,12 +81,16 @@ export const cursorSlice = createSlice({
         },
         updateTextArea: (state, action: PayloadAction<boolean>) => {
             state.textArea = action.payload
+        },
+        updateTextStrikethrough: (state, action: PayloadAction<string>) => {
+            state.textStrikethrough = action.payload
         }
 
     }
 })
 
 export const {
+    updateTextStrikethrough,
     updateFonStyle,
     updateFontWeight,
     updateTextArea,

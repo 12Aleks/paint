@@ -1,5 +1,5 @@
 'use client'
-import React, { useState,  MouseEventHandler } from 'react';
+import { FC, useState } from 'react';
 
 import { setPath } from "@/lib/features/paintSlice";
 import Canvas from "@/app/components/Canvas";
@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 interface ImagePainterProps {}
 
-const ImagePainter: React.FC<ImagePainterProps> = () => {
+const ImagePainter: FC<ImagePainterProps> = () => {
     const dispatch = useAppDispatch();
     const data = useAppSelector(state => state.data);
     const cursorData = useAppSelector(state => state.cursorData);
