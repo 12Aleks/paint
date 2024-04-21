@@ -9,6 +9,7 @@ import {flipHorizontal, flipVertical} from "@/mods/flip";
 import {rotateCanvas} from "@/mods/rotate";
 import {updateRotate, updateTextInput} from "@/lib/features/paintSlice";
 import {renderText} from "@/mods/text";
+import {searchMode} from "@/mods/search";
 
 
 interface ICanvas{
@@ -65,6 +66,7 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
 
         if (event.buttons !== 1 || !ctx) return;
         if (cursorData.mode.includes('bi-pencil-fill')) {
+            ctx.setLineDash([]);
             ctx.imageSmoothingEnabled = false;
             ctx.strokeStyle = cursorData.colorFirst;
             ctx.lineWidth = cursorData.cursorSize;
@@ -72,14 +74,10 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
             ctx.stroke();
             dispatch(updateDrawing([...cursorData.drawing, {x, y}]));
         } else if (cursorData.mode.includes('bi-eraser')) {
+            ctx.setLineDash([]);
             eraserCanvas(ctx, x, y, cursorData.cursorSize)
         }else if (cursorData.mode.includes('search')) {
             if (!origin) return;
-            const canvas = canvasRef.current;
-            if (!canvas) return;
-            const rect = canvas.getBoundingClientRect();
-            const x = Math.round(event.clientX - rect.left);
-            const y = Math.round(event.clientY - rect.top);
             setCurrentPosition({ x, y });
         }
         dispatch(setPosition([x, y]))
@@ -121,11 +119,6 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
             dispatch(updateTextArea(!cursorData.textArea))
             !cursorData.textArea && changeTextPosition({x , y})
         }else if (cursorData.mode.includes('search')) {
-            const canvas = canvasRef.current;
-            if (!canvas) return;
-            const rect = canvas.getBoundingClientRect();
-            const x = Math.round(event.clientX - rect.left);
-            const y = Math.round(event.clientY - rect.top);
             setOrigin({ x, y });
         }
 
@@ -134,29 +127,12 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
 
     const handleMouseUp: MouseEventHandler<HTMLCanvasElement> = () => {
         if (!origin || !currentPosition) return;
-        // Perform actions with the selected rectangle, if needed
         setOrigin(null);
         setCurrentPosition(null);
     };
 
     useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        if (origin && currentPosition) {
-            ctx.strokeStyle = "#ff0000";
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            ctx.rect(
-                origin.x,
-                origin.y,
-                currentPosition.x - origin.x,
-                currentPosition.y - origin.y
-            );
-            ctx.stroke();
-        }
+        searchMode({ canvasRef, currentPosition, origin })
     }, [origin, currentPosition]);
 
     return (

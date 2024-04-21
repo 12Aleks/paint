@@ -107,7 +107,7 @@ $button-active-gray: #757575;
     }
   }
 
-  .size_block {
+  .size_block, .selection_block {
     ul.dropdown-menu, li, button.dropdown-item {
       background: #6e6e6e;
       font-size: 14px;
@@ -134,6 +134,17 @@ $button-active-gray: #757575;
         position: relative;
         margin: 0 auto;
         color: $text-color;
+      }
+    }
+  }
+
+  .selection_block{
+    text-align: center;
+    button{
+      div{
+        width: 26px;
+        height: 26px;
+        border: 1px dashed white;
       }
     }
   }

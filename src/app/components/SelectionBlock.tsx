@@ -2,7 +2,7 @@
 import {updateMode} from "@/lib/features/cursorSlice";
 import {useAppDispatch} from "@/lib/hooks";
 
-const select: string[] = ['Rectangle']
+const select: string[] = ['Rectangle', 'Free-form']
 
 const SelectionBlock = () => {
     const dispatch =useAppDispatch();
@@ -21,7 +21,7 @@ const SelectionBlock = () => {
                     <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton"
                             aria-expanded='false'
                             data-bs-toggle="dropdown">
-                            <div className="p-3" style={{border: '1px dashed white'}}></div>
+                            <div></div>
                     </button>
                     <ul className={`dropdown-menu`}
                         aria-labelledby="dropdownMenuButton">
@@ -32,7 +32,7 @@ const SelectionBlock = () => {
                                     type="button"
                                     onClick={() => changeSelectReg(el)}
                                 >
-                                    {el}px <div className="bg-light w-100 ms-2" style={{height: el}}></div>
+                                   <div className="me-3"></div> {el}
                                 </button>
                             </li>
                         ))}
