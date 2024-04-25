@@ -20,7 +20,8 @@ export interface ICursorSlice {
     fontWeight: string,
     textDecoration: string,
     textArea: boolean,
-    textStrikethrough: string
+    textStrikethrough: string,
+    textPosition: string
 }
 
 const initialState: ICursorSlice = {
@@ -38,7 +39,8 @@ const initialState: ICursorSlice = {
     fontWeight: 'normal',
     textDecoration: '',
     textStrikethrough: '',
-    textArea: false
+    textArea: false,
+    textPosition: 'left'
 }
 export const cursorSlice = createSlice({
     name: 'cursor',
@@ -84,6 +86,9 @@ export const cursorSlice = createSlice({
         },
         updateTextStrikethrough: (state, action: PayloadAction<string>) => {
             state.textStrikethrough = action.payload
+        },
+        updateTextPosition: (state, action: PayloadAction<string>) => {
+            state.textPosition = action.payload
         }
 
     }
@@ -101,6 +106,7 @@ export const {
     updateMode,
     updateCursorSize,
     updateDrawing,
-    updateCursorMainColor
+    updateCursorMainColor,
+    updateTextPosition
 } = cursorSlice.actions;
 export default cursorSlice.reducer

@@ -1,12 +1,25 @@
 import {ICursorSlice} from "@/lib/features/cursorSlice";
+import {RefObject} from "react";
 
 
-export const renderText = (cursorData: ICursorSlice, ctx: CanvasRenderingContext2D, textInput: string, x: number, y: number) => {
+export const renderText = (cursorData: ICursorSlice, canvasRef: RefObject<HTMLCanvasElement>, textInput: string, x: number, y: number) => {
+    if (!canvasRef || !canvasRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d')!;
     ctx.font = `${cursorData.fontWeight} ${cursorData.fonStyle} ${cursorData.fontSize}px  ${cursorData.fontFamily}`;
     ctx.fillStyle = cursorData.colorFirst;
     ctx.imageSmoothingEnabled = false;
     ctx.fillText(textInput, Math.round(x) + 2, Math.round(y) + cursorData.fontSize - 1 );
-    console.log(cursorData.textDecoration)
+    // Calculate text width
+    const textWidth = ctx.measureText(textInput).width;
+    // Adjust x coordinate based on alignment
+    console.log('Text', cursorData.textPosition)
+    if (cursorData.textPosition === 'center') {
+        x -= textWidth / 2;
+    } else if (cursorData.textPosition === 'right') {
+        x -= textWidth;
+    }
+
     if (cursorData.textDecoration.includes('underline') || cursorData.textStrikethrough.includes("strikethrough")) {
         const textMetrics = ctx.measureText(textInput);
         const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent;

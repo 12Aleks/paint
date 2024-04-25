@@ -56,6 +56,9 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
         !cursorData.mode.includes('bi-fonts') && dispatch(updateTextArea(false))
     }, [cursorData.mode] )
 
+    useEffect(() => {
+        renderText(cursorData, canvasRef, data.textInput, position.x, position.y );
+    }, [cursorData.textPosition] )
 
     const handleMouseMove: MouseEventHandler<HTMLCanvasElement> = (event) => {
         const canvas = canvasRef.current;
@@ -114,7 +117,7 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
         } else if (cursorData.mode.includes('bi-zoom-in')) {
             zoomPlus(ctx, canvas)
         } else if (cursorData.mode.includes('bi-fonts')) {
-            renderText(cursorData, ctx, data.textInput, position.x, position.y );
+            renderText(cursorData, canvasRef, data.textInput, position.x, position.y );
             dispatch(updateTextInput(''))
             dispatch(updateTextArea(!cursorData.textArea))
             !cursorData.textArea && changeTextPosition({x , y})

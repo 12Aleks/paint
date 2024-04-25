@@ -6,7 +6,9 @@ import {
     updateFontFamily,
     updateFontSize,
     updateFontWeight,
-    updateTextDecoration, updateTextStrikethrough
+    updateTextDecoration,
+    updateTextStrikethrough,
+    updateTextPosition
 } from "@/lib/features/cursorSlice";
 
 
@@ -33,12 +35,14 @@ const fontName : string[] = [
     'Wingdings'
 ];
 
-const textDecorations: string[] = ['bold', 'italic', 'underline', 'strikethrough']
+const textDecorations: string[] = ['bold', 'italic', 'underline', 'strikethrough'];
+
 
 const Modal: FC<IShow> = ({show}) => {
     const cursorData = useAppSelector(state => state.cursorData);
     const dispatch = useAppDispatch();
     const [active, setActive] = useState<string[]>([])
+    const [activePosition, setActivePosition] = useState<string>('left')
 
 
     function setTextInput(e: string) {
@@ -50,6 +54,12 @@ const Modal: FC<IShow> = ({show}) => {
     }
     function changeFontFamily(name: string){
         dispatch(updateFontFamily(name))
+    }
+
+    function changeTextPosition(position: string){
+
+        dispatch(updateTextPosition(position))
+        setActivePosition(position);
     }
 
     function changeTextDecoration(format: string) {
@@ -118,14 +128,14 @@ const Modal: FC<IShow> = ({show}) => {
                             }
                         </div>
                         <div className="w-25 d-flex justify-content-between border-start border-2-secondary ps-2 pe-2 wrapper">
-                            <div>
-                                <i className="bi bi-filter-left"></i>
+                            <div className={activePosition.includes('left') ? 'active' : ''}>
+                                <i className="bi bi-filter-left" onClick={() => changeTextPosition('left')}></i>
                             </div>
-                            <div>
-                                <i className="bi bi-filter"></i>
+                            <div className={activePosition.includes('center') ? 'active' : ''}>
+                                <i className="bi bi-filter" onClick={() => changeTextPosition('center')}></i>
                             </div>
-                            <div>
-                                <i className="bi bi-filter-right"></i>
+                            <div className={activePosition.includes('right') ? 'active' : ''}>
+                                <i className="bi bi-filter-right" onClick={() => changeTextPosition('right')}></i>
                             </div>
                         </div>
                         <div className="w-25 d-flex justify-content-between border-start border-2-secondary ps-2 pe-2">
