@@ -1,6 +1,7 @@
-import {Dispatch, SetStateAction, FC, ChangeEvent, DragEvent, useEffect} from 'react'
+import {Dispatch, SetStateAction, FC, ChangeEvent, DragEvent, useEffect, useRef} from 'react'
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { updateTextInput } from "@/lib/features/paintSlice";
+import {updateTextAreaSize} from "@/lib/features/cursorSlice";
 
 interface DragDropInputProps {
     isDragging: boolean;
@@ -10,9 +11,10 @@ interface DragDropInputProps {
 }
 
 const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition,  show }) => {
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const data = useAppSelector(state => state.data);
     const cursorData = useAppSelector(state => state.cursorData);
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
     const handleTextInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => { // Change to HTMLTextAreaElement
         dispatch(updateTextInput(event.target.value));
@@ -22,8 +24,27 @@ const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition,  
         !show && setPosition({ x: 0, y: 0 });
     }, [show])
 
+    useEffect(() => {
+        const handleResize = () => {
+            if (textAreaRef.current) {
+                const width = textAreaRef.current.offsetWidth;
+                dispatch(updateTextAreaSize(width));
+            }
+        };
+
+        const resizeObserver = new ResizeObserver(handleResize);
+        if (textAreaRef.current) {
+            resizeObserver.observe(textAreaRef.current);
+        }
+
+        return () => {
+            resizeObserver.disconnect();
+        };
+    }, [textAreaRef.current]);
+
     return (
         <textarea
+            ref={textAreaRef}
             value={data.textInput}
             onChange={handleTextInputChange}
             draggable={!isDragging}
@@ -38,7 +59,8 @@ const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition,  
                       textDecoration: cursorData.textDecoration || cursorData.textStrikethrough && 'line-through' ,
                       fontStyle: cursorData.fonStyle,
                       lineHeight: cursorData.fontSize + 'px',
-                      color: cursorData.colorFirst
+                      color: cursorData.colorFirst,
+                      textAlign: cursorData.textPosition
            }}
         />
     );

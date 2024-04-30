@@ -4,7 +4,7 @@ interface Point {
     x: number;
     y: number;
 }
-
+type TextAlign = 'left' | 'right' | 'center'
 export interface ICursorSlice {
     positionX: number;
     positionY: number
@@ -21,7 +21,8 @@ export interface ICursorSlice {
     textDecoration: string,
     textArea: boolean,
     textStrikethrough: string,
-    textPosition: string
+    textPosition: TextAlign,
+    textAreaSize: number
 }
 
 const initialState: ICursorSlice = {
@@ -40,7 +41,8 @@ const initialState: ICursorSlice = {
     textDecoration: '',
     textStrikethrough: '',
     textArea: false,
-    textPosition: 'left'
+    textPosition: 'left',
+    textAreaSize: 131,
 }
 export const cursorSlice = createSlice({
     name: 'cursor',
@@ -87,8 +89,11 @@ export const cursorSlice = createSlice({
         updateTextStrikethrough: (state, action: PayloadAction<string>) => {
             state.textStrikethrough = action.payload
         },
-        updateTextPosition: (state, action: PayloadAction<string>) => {
+        updateTextPosition: (state, action: PayloadAction<TextAlign>) => {
             state.textPosition = action.payload
+        },
+        updateTextAreaSize: (state, action: PayloadAction<number>) => {
+            state.textAreaSize = action.payload
         }
 
     }
@@ -107,6 +112,7 @@ export const {
     updateCursorSize,
     updateDrawing,
     updateCursorMainColor,
-    updateTextPosition
+    updateTextPosition,
+    updateTextAreaSize
 } = cursorSlice.actions;
 export default cursorSlice.reducer

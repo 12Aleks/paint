@@ -1,24 +1,21 @@
-import {ICursorSlice} from "@/lib/features/cursorSlice";
-import {RefObject} from "react";
+import { ICursorSlice } from "@/lib/features/cursorSlice";
 
-
-export const renderText = (cursorData: ICursorSlice, canvasRef: RefObject<HTMLCanvasElement>, textInput: string, x: number, y: number) => {
-    if (!canvasRef || !canvasRef.current) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d')!;
+export const renderText = (cursorData: ICursorSlice, ctx: CanvasRenderingContext2D, textInput: string, x: number, y: number) => {
     ctx.font = `${cursorData.fontWeight} ${cursorData.fonStyle} ${cursorData.fontSize}px  ${cursorData.fontFamily}`;
     ctx.fillStyle = cursorData.colorFirst;
     ctx.imageSmoothingEnabled = false;
-    ctx.fillText(textInput, Math.round(x) + 2, Math.round(y) + cursorData.fontSize - 1 );
+
     // Calculate text width
     const textWidth = ctx.measureText(textInput).width;
-    // Adjust x coordinate based on alignment
-    console.log('Text', cursorData.textPosition)
+    let adjustedX = x;
     if (cursorData.textPosition === 'center') {
-        x -= textWidth / 2;
-    } else if (cursorData.textPosition === 'right') {
-        x -= textWidth;
+        adjustedX = x + (cursorData.textAreaSize / 2) - (textWidth / 2); // Center the text horizontally below the textarea window
     }
+    if (cursorData.textPosition === 'right') {
+        adjustedX = x + cursorData.textAreaSize - textWidth; // Align to the right below the textarea window
+    }
+
+    ctx.fillText(textInput, Math.round(adjustedX), Math.round(y) + cursorData.fontSize);
 
     if (cursorData.textDecoration.includes('underline') || cursorData.textStrikethrough.includes("strikethrough")) {
         const textMetrics = ctx.measureText(textInput);
@@ -26,16 +23,16 @@ export const renderText = (cursorData: ICursorSlice, canvasRef: RefObject<HTMLCa
 
         if (cursorData.textDecoration.includes('underline')) {
             ctx.beginPath();
-            ctx.moveTo(Math.round(x) + 2, Math.round(y) + cursorData.fontSize + 1);
-            ctx.lineTo(Math.round(x) + 2 + textMetrics.width, Math.round(y) + cursorData.fontSize + 1);
+            ctx.moveTo(Math.round(adjustedX), Math.round(y) + cursorData.fontSize + 1);
+            ctx.lineTo(Math.round(adjustedX) + textMetrics.width, Math.round(y) + cursorData.fontSize + 1);
             ctx.strokeStyle = cursorData.colorFirst;
             ctx.stroke();
         }
 
         if (cursorData.textStrikethrough.includes("strikethrough")) {
             ctx.beginPath();
-            ctx.moveTo(Math.round(x) + 2, Math.round(y) + textHeight - 2);
-            ctx.lineTo(Math.round(x) + 2 + textMetrics.width, Math.round(y) + textHeight - 2);
+            ctx.moveTo(Math.round(adjustedX), Math.round(y) + textHeight - 2);
+            ctx.lineTo(Math.round(adjustedX) + textMetrics.width, Math.round(y) + textHeight - 2);
             ctx.strokeStyle = cursorData.colorFirst;
             ctx.stroke();
         }
