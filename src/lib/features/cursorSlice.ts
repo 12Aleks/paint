@@ -4,7 +4,9 @@ interface Point {
     x: number;
     y: number;
 }
-type TextAlign = 'left' | 'right' | 'center'
+export type TextAlign = 'left' | 'right' | 'center';
+
+
 export interface ICursorSlice {
     positionX: number;
     positionY: number

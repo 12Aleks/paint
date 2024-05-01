@@ -5,7 +5,7 @@ export const renderText = (cursorData: ICursorSlice, ctx: CanvasRenderingContext
     ctx.fillStyle = cursorData.colorFirst;
     ctx.imageSmoothingEnabled = false;
 
-    // Calculate text width
+    // Text position in textarea. Calculate text width
     const textWidth = ctx.measureText(textInput).width;
     let adjustedX = x;
     if (cursorData.textPosition === 'center') {
@@ -16,7 +16,7 @@ export const renderText = (cursorData: ICursorSlice, ctx: CanvasRenderingContext
     }
 
     ctx.fillText(textInput, Math.round(adjustedX), Math.round(y) + cursorData.fontSize);
-
+    console.log(cursorData.textDecoration)
     if (cursorData.textDecoration.includes('underline') || cursorData.textStrikethrough.includes("strikethrough")) {
         const textMetrics = ctx.measureText(textInput);
         const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent;

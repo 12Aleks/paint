@@ -8,7 +8,7 @@ import {
     updateFontWeight,
     updateTextDecoration,
     updateTextStrikethrough,
-    updateTextPosition
+    updateTextPosition, TextAlign
 } from "@/lib/features/cursorSlice";
 
 
@@ -56,8 +56,7 @@ const Modal: FC<IShow> = ({show}) => {
         dispatch(updateFontFamily(name))
     }
 
-    function changeTextPosition(position: string){
-
+    function changeTextPosition(position: TextAlign){
         dispatch(updateTextPosition(position))
         setActivePosition(position);
     }
@@ -66,15 +65,16 @@ const Modal: FC<IShow> = ({show}) => {
         const index = active.indexOf(format);
         if (index === -1) {
             setActive([...active, format]);
+              dispatch(updateTextDecoration(format.includes('underline')? 'underline': ''));
+              dispatch(updateFontWeight(format.includes('bold')?'bold' : 'normal'));
+              dispatch(updateFonStyle(format.includes('italic')?'italic' : 'normal'))
+              dispatch(updateTextStrikethrough(format.includes('strikethrough')?'strikethrough' : 'normal'));
         } else {
             const newActive = [...active];
             newActive.splice(index, 1);
             setActive(newActive);
         }
-        format.includes('underline') ? dispatch(updateTextDecoration(format)) : dispatch(updateTextDecoration(''));
-        format.includes('bold') ? dispatch(updateFontWeight(format)): dispatch(updateFontWeight('normal'))
-        format.includes('italic') ? dispatch(updateFonStyle(format)): dispatch(updateFonStyle('normal'))
-        format.includes('strikethrough') ? dispatch(updateTextStrikethrough(format)): dispatch(updateTextStrikethrough('normal'))
+
     }
 
     return (

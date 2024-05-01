@@ -41,6 +41,9 @@ const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition,  
             resizeObserver.disconnect();
         };
     }, [textAreaRef.current]);
+    console.log(cursorData.textStrikethrough)
+    console.log(cursorData.textDecoration || (cursorData.textStrikethrough.includes('normal') ? 'normal': 'line-through'))
+
 
     return (
         <textarea
@@ -56,7 +59,7 @@ const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition,  
                       fontSize: cursorData.fontSize,
                       fontFamily: cursorData.fontFamily,
                       fontWeight: cursorData.fontWeight,
-                      textDecoration: cursorData.textDecoration || cursorData.textStrikethrough && 'line-through' ,
+                      textDecoration: cursorData.textDecoration + (cursorData.textStrikethrough.includes('normal') ? ' normal' : ' line-through'),
                       fontStyle: cursorData.fonStyle,
                       lineHeight: cursorData.fontSize + 'px',
                       color: cursorData.colorFirst,
