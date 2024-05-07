@@ -1,6 +1,5 @@
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
-import {updateTextInput} from "@/lib/features/paintSlice";
 import {
     updateFonStyle,
     updateFontFamily,
@@ -41,13 +40,8 @@ const textDecorations: string[] = ['bold', 'italic', 'underline', 'strikethrough
 const Modal: FC<IShow> = ({show}) => {
     const cursorData = useAppSelector(state => state.cursorData);
     const dispatch = useAppDispatch();
-    const [active, setActive] = useState<string[]>([])
-    const [activePosition, setActivePosition] = useState<string>('left')
-
-
-    function setTextInput(e: string) {
-        dispatch(updateTextInput(e))
-    }
+    const [active, setActive] = useState<string[]>([]);
+    const [activePosition, setActivePosition] = useState<string>('left');
 
     function changeFontSize(size: number){
         dispatch(updateFontSize(size))
@@ -65,17 +59,19 @@ const Modal: FC<IShow> = ({show}) => {
         const index = active.indexOf(format);
         if (index === -1) {
             setActive([...active, format]);
-              dispatch(updateTextDecoration(format.includes('underline')? 'underline': ''));
-              dispatch(updateFontWeight(format.includes('bold')?'bold' : 'normal'));
-              dispatch(updateFonStyle(format.includes('italic')?'italic' : 'normal'))
-              dispatch(updateTextStrikethrough(format.includes('strikethrough')?'strikethrough' : 'normal'));
         } else {
             const newActive = [...active];
             newActive.splice(index, 1);
             setActive(newActive);
         }
-
     }
+
+    useEffect(() => {
+        dispatch(updateTextStrikethrough(active.includes('strikethrough')?'strikethrough': ''))
+        dispatch(updateFontWeight(active.includes('bold')? 'bold': 'normal'));
+        dispatch(updateTextDecoration(active.includes('underline')? 'underline': ''));
+        dispatch(updateFonStyle(active.includes('italic')? 'italic': 'normal'))
+    }, [active])
 
     return (
         <div className={`modal_overlay ${show ? 'show' : ''}`}>
