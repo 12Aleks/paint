@@ -67,7 +67,7 @@ const Modal: FC<IShow> = ({show}) => {
     }
 
     useEffect(() => {
-        dispatch(updateTextStrikethrough(active.includes('strikethrough')?'strikethrough': ''))
+        dispatch(updateTextStrikethrough(active.includes('strikethrough')?'line-through': ''))
         dispatch(updateFontWeight(active.includes('bold')? 'bold': 'normal'));
         dispatch(updateTextDecoration(active.includes('underline')? 'underline': ''));
         dispatch(updateFonStyle(active.includes('italic')? 'italic': 'normal'))

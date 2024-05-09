@@ -13,7 +13,6 @@ import {searchMode} from "@/mods/search";
 
 
 interface ICanvas{
-    // dragOffset: { x: number; y: number };
     position: { x: number; y: number };
     changeTextPosition: Dispatch<SetStateAction<{ x: number; y: number }>>;
 }

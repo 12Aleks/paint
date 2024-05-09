@@ -17,7 +17,7 @@ export const renderText = (cursorData: ICursorSlice, ctx: CanvasRenderingContext
 
     ctx.fillText(textInput, Math.round(adjustedX), Math.round(y) + cursorData.fontSize);
 
-    if (cursorData.textDecoration.includes('underline') || cursorData.textStrikethrough.includes("strikethrough")) {
+    if (cursorData.textDecoration.includes('underline') || cursorData.textStrikethrough.includes('line-through')) {
         const textMetrics = ctx.measureText(textInput);
         const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent;
 
@@ -29,7 +29,7 @@ export const renderText = (cursorData: ICursorSlice, ctx: CanvasRenderingContext
             ctx.stroke();
         }
 
-        if (cursorData.textStrikethrough.includes("strikethrough")) {
+        if (cursorData.textStrikethrough.includes('line-through')) {
             console.log('TRUE')
             ctx.beginPath();
             ctx.moveTo(Math.round(adjustedX), Math.round(y) + textHeight - 2);

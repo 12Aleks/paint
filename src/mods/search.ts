@@ -11,13 +11,16 @@ export const searchMode = ({ canvasRef, currentPosition, origin }: ISearchMode) 
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+
+
 
     if (origin && currentPosition) {
         ctx.setLineDash([5]);
         ctx.strokeStyle = "black";
         ctx.lineWidth = 1;
 
-         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
         ctx.rect(
             origin.x,
