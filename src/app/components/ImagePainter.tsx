@@ -6,6 +6,7 @@ import Canvas from "@/app/components/Canvas";
 import Modal from "@/app/components/Modal";
 import TextArea from "@/app/components/TextArea";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import SizeModal from "@/app/components/SizeModal";
 
 interface ImagePainterProps {}
 
@@ -24,6 +25,7 @@ const ImagePainter: FC<ImagePainterProps> = () => {
     return (
         <>
             <Modal show={cursorData.mode.includes('bi-fonts')}/>
+            <SizeModal/>
             <div className='position-relative overflow-hidden'>
                 <Canvas position={inputPosition}
                         changeTextPosition={setInputPosition}
