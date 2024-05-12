@@ -20,7 +20,7 @@ const SizeModal = () => {
                    min="0"
                    max="100"
                    step="5"
-                   value={cursorData.cursorSizegit}
+                   value={cursorData.cursorSize}
                    onChange={changeSize}
             />
         </div>
