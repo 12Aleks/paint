@@ -1,8 +1,9 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, FC} from 'react';
 import {updateCursorSize} from "@/lib/features/cursorSlice";
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
+import {IShow} from "@/app/components/Modal";
 
-const SizeModal = () => {
+const SizeModal: FC<IShow> = ({show}) => {
     const cursorData = useAppSelector(state => state.cursorData);
     const dispatch = useAppDispatch();
 
@@ -13,8 +14,9 @@ const SizeModal = () => {
         dispatch(updateCursorSize(size)); // Dispatch action to update cursor size
     };
 
+
     return (
-        <div className="size-modal">
+        <div className={`size-modal ${show ? 'show' : ''}`}>
             <input className="ms-2 me-2 custom-vertical-range"
                    type="range"
                    min="0"

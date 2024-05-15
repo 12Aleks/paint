@@ -25,7 +25,7 @@ const ImagePainter: FC<ImagePainterProps> = () => {
     return (
         <>
             <Modal show={cursorData.mode.includes('bi-fonts')}/>
-            <SizeModal/>
+            <SizeModal show={cursorData.mode.includes('bi-pencil-fill') || cursorData.mode.includes('bi-eraser')}/>
             <div className='position-relative overflow-hidden'>
                 <Canvas position={inputPosition}
                         changeTextPosition={setInputPosition}

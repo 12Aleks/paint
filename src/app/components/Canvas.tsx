@@ -131,7 +131,17 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
     };
 
     useEffect(() => {
-        searchMode({ canvasRef, currentPosition, origin })
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext('2d')!;
+        if (!ctx) return;
+
+        // Clear the canvas when drawing starts
+        if (origin && currentPosition) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Call searchMode to draw the search rectangle
+        searchMode({ canvasRef, currentPosition, origin });
     }, [origin, currentPosition]);
 
     return (

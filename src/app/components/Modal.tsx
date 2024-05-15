@@ -11,7 +11,7 @@ import {
 } from "@/lib/features/cursorSlice";
 
 
-interface IShow {
+export interface IShow {
     show: boolean
 }
 
