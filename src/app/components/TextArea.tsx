@@ -41,7 +41,7 @@ const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition,  
             resizeObserver.disconnect();
         };
     }, [textAreaRef.current]);
-   console.log(cursorData.textStrikethrough.length ? 'line-through' : '' )
+
     return (
         <textarea
             ref={textAreaRef}

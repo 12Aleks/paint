@@ -23,6 +23,7 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [origin, setOrigin] = useState<{ x: number; y: number } | null>(null);
     const [currentPosition, setCurrentPosition] = useState<{ x: number; y: number } | null>(null);
+    const [savedImageData, setSavedImageData] = useState<ImageData | null>(null);
 
     useEffect(() => {
         if (data.imageData) {
@@ -75,9 +76,17 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
         } else if (cursorData.mode.includes('bi-eraser')) {
             ctx.setLineDash([]);
             eraserCanvas(ctx, x, y, cursorData.cursorSize)
-        }else if (cursorData.mode.includes('search')) {
+        } else if (cursorData.mode.includes('search')) {
             if (!origin) return;
             setCurrentPosition({ x, y });
+
+            // Restore the saved image data
+            if (savedImageData) {
+                ctx.putImageData(savedImageData, 0, 0);
+            }
+
+            // Draw the selection rectangle
+            searchMode({ canvasRef, currentPosition: { x, y }, origin });
         }
         dispatch(setPosition([x, y]))
     }
@@ -117,8 +126,12 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
             dispatch(updateTextInput(''))
             dispatch(updateTextArea(!cursorData.textArea))
             !cursorData.textArea && changeTextPosition({x , y})
-        }else if (cursorData.mode.includes('search')) {
+        } else if (cursorData.mode.includes('search')) {
             setOrigin({ x, y });
+
+            // Save the current canvas image data
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            setSavedImageData(imageData);
         }
 
         dispatch(setPosition([x, y]));
@@ -131,17 +144,9 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
     };
 
     useEffect(() => {
-        const canvas = canvasRef.current;
-        const ctx = canvas?.getContext('2d')!;
-        if (!ctx) return;
-
-        // Clear the canvas when drawing starts
         if (origin && currentPosition) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            searchMode({ canvasRef, currentPosition, origin });
         }
-
-        // Call searchMode to draw the search rectangle
-        searchMode({ canvasRef, currentPosition, origin });
     }, [origin, currentPosition]);
 
     return (
