@@ -1,22 +1,22 @@
-import {Dispatch, FC, MouseEvent, MouseEventHandler, SetStateAction, useEffect, useRef, useState} from 'react';
-import {setPosition, updateDrawing, updateCursorMainColor, updateTextArea} from "@/lib/features/cursorSlice";
-import {useAppDispatch, useAppSelector} from "@/lib/hooks";
-import {floodFill} from "@/mods/fill";
-import {getColor} from "@/mods/picker";
-import {eraserCanvas} from "@/mods/eraser";
-import {zoomPlus} from "@/mods/zoom";
-import {flipHorizontal, flipVertical} from "@/mods/flip";
-import {rotateCanvas} from "@/mods/rotate";
-import {updateRotate, updateTextInput} from "@/lib/features/paintSlice";
-import {renderText} from "@/mods/text";
-import {searchMode} from "@/mods/search";
+import React, { Dispatch, FC, MouseEvent, MouseEventHandler, SetStateAction, useEffect, useRef, useState } from 'react';
+import { setPosition, updateDrawing, updateCursorMainColor, updateTextArea } from "@/lib/features/cursorSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { floodFill } from "@/mods/fill";
+import { getColor } from "@/mods/picker";
+import { eraserCanvas } from "@/mods/eraser";
+import { zoomPlus } from "@/mods/zoom";
+import { flipHorizontal, flipVertical } from "@/mods/flip";
+import { rotateCanvas } from "@/mods/rotate";
+import { updateRotate, updateTextInput } from "@/lib/features/paintSlice";
+import { renderText } from "@/mods/text";
+import { searchMode } from "@/mods/search";
 
-
-interface ICanvas{
+interface ICanvas {
     position: { x: number; y: number };
     changeTextPosition: Dispatch<SetStateAction<{ x: number; y: number }>>;
 }
-const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
+
+const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
     const dispatch = useAppDispatch();
     const data = useAppSelector(state => state.data);
     const cursorData = useAppSelector(state => state.cursorData);
@@ -24,6 +24,8 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
     const [origin, setOrigin] = useState<{ x: number; y: number } | null>(null);
     const [currentPosition, setCurrentPosition] = useState<{ x: number; y: number } | null>(null);
     const [savedImageData, setSavedImageData] = useState<ImageData | null>(null);
+    const [selection, setSelection] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
+    const [isDragging, setIsDragging] = useState<boolean>(false);
 
     useEffect(() => {
         if (data.imageData) {
@@ -49,13 +51,12 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
 
     useEffect(() => {
         data.rotate && rotateCanvas(canvasRef, data.rotate);
-        dispatch(updateRotate(0))
+        dispatch(updateRotate(0));
     }, [data.rotate]);
 
     useEffect(() => {
-        !cursorData.mode.includes('bi-fonts') && dispatch(updateTextArea(false))
-    }, [cursorData.mode] )
-
+        !cursorData.mode.includes('bi-fonts') && dispatch(updateTextArea(false));
+    }, [cursorData.mode]);
 
     const handleMouseMove: MouseEventHandler<HTMLCanvasElement> = (event) => {
         const canvas = canvasRef.current;
@@ -72,10 +73,10 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
             ctx.lineWidth = cursorData.cursorSize;
             ctx.lineTo(x, y);
             ctx.stroke();
-            dispatch(updateDrawing([...cursorData.drawing, {x, y}]));
+            dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
         } else if (cursorData.mode.includes('bi-eraser')) {
             ctx.setLineDash([]);
-            eraserCanvas(ctx, x, y, cursorData.cursorSize)
+            eraserCanvas(ctx, x, y, cursorData.cursorSize);
         } else if (cursorData.mode.includes('search')) {
             if (!origin) return;
             setCurrentPosition({ x, y });
@@ -86,10 +87,16 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
             }
 
             // Draw the selection rectangle
-            searchMode({ canvasRef, currentPosition: { x, y }, origin });
+            const selectionRect = searchMode({ canvasRef, currentPosition: { x, y }, origin });
+            if (selectionRect) setSelection(selectionRect);
+        } else if (isDragging && selection && savedImageData) {
+            ctx.putImageData(savedImageData, 0, 0); // Restore the canvas
+            const newX = x - (selection.width / 2);
+            const newY = y - (selection.height / 2);
+            ctx.putImageData(savedImageData, newX, newY); // Draw the dragged image
         }
-        dispatch(setPosition([x, y]))
-    }
+        dispatch(setPosition([x, y]));
+    };
 
     const handleMouseLeave = () => {
         dispatch(updateDrawing([]));
@@ -111,36 +118,65 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition}) => {
             ctx.moveTo(x, y);
             ctx.lineTo(x, y);
             ctx.stroke();
-            dispatch(updateDrawing([...cursorData.drawing, {x, y}]));
+            dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
         } else if (cursorData.mode.includes('bi-paint-bucket')) {
             floodFill(ctx, x, y, cursorData.colorFirst);
         } else if (cursorData.mode.includes('bi-eyedropper')) {
             const color = getColor(ctx, x, y);
-            dispatch(updateCursorMainColor([true, color]))
+            dispatch(updateCursorMainColor([true, color]));
         } else if (cursorData.mode.includes('bi-eraser')) {
-            eraserCanvas(ctx, x, y, cursorData.cursorSize)
+            eraserCanvas(ctx, x, y, cursorData.cursorSize);
         } else if (cursorData.mode.includes('bi-zoom-in')) {
-            zoomPlus(ctx, canvas)
+            zoomPlus(ctx, canvas);
         } else if (cursorData.mode.includes('bi-fonts')) {
-            renderText(cursorData, ctx, data.textInput, position.x, position.y );
-            dispatch(updateTextInput(''))
-            dispatch(updateTextArea(!cursorData.textArea))
-            !cursorData.textArea && changeTextPosition({x , y})
+            renderText(cursorData, ctx, data.textInput, position.x, position.y);
+            dispatch(updateTextInput(''));
+            dispatch(updateTextArea(!cursorData.textArea));
+            !cursorData.textArea && changeTextPosition({ x, y });
         } else if (cursorData.mode.includes('search')) {
             setOrigin({ x, y });
 
             // Save the current canvas image data
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             setSavedImageData(imageData);
+        } else if (selection) {
+            // Check if the click is within the selection area
+            if (
+                x >= selection.x &&
+                x <= selection.x + selection.width &&
+                y >= selection.y &&
+                y <= selection.y + selection.height
+            ) {
+                setIsDragging(true);
+            }
         }
 
         dispatch(setPosition([x, y]));
     };
 
-    const handleMouseUp: MouseEventHandler<HTMLCanvasElement> = () => {
+    const handleMouseUp: MouseEventHandler<HTMLCanvasElement> = (event) => {
+        setIsDragging(false);
         if (!origin || !currentPosition) return;
-        setOrigin(null);
-        setCurrentPosition(null);
+
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas?.getContext('2d')!;
+        const rect = canvas?.getBoundingClientRect();
+        const x = Math.round(event.clientX - (rect?.left || 0));
+        const y = Math.round(event.clientY - (rect?.top || 0));
+
+        if (selection) {
+            const newX = x - (selection.width / 2);
+            const newY = y - (selection.height / 2);
+
+            ctx.putImageData(savedImageData!, newX, newY); // Place the image at new location
+
+            // Clear selection
+            setOrigin(null);
+            setCurrentPosition(null);
+            setSelection(null);
+            setSavedImageData(null);
+        }
     };
 
     useEffect(() => {
