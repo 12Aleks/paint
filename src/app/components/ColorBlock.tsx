@@ -60,8 +60,10 @@ const ColorBlock = () => {
                 <div className="ms-4">
                     <div className='color-input-wrapper'>
                         <input type="color"
+                               id="color-input"
                                onChange={(e) => updateColor(e.target.value)}
                         />
+                        <label className="color-select" htmlFor="color-input" ></label>
                     </div>
                 </div>
             </div>
