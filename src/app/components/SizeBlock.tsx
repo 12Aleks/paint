@@ -1,23 +1,30 @@
-"use client"
+"use client";
 import Image from 'next/image';
-import {useAppDispatch, useAppSelector} from "@/lib/hooks";
-import {updateCursorSize} from "@/lib/features/cursorSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { updateCursorSize } from "@/lib/features/cursorSlice";
 
 interface SizeMap {
-    [key: string]: number[]; // Index signature
+    [key: string]: string; // Index signature
 }
+
 const SizeBlock = () => {
-    let size: SizeMap = {
-        'bi-pencil-fill': [1, 3, 5, 8],
-        'bi-eraser': [4, 6, 8, 10],
+    const brushTypes: SizeMap = {
+        'Brush': 'bi-brush-fill',
+        'Calligraphy brush': 'bi-brush-calligraphy',
+        'Calligraphy pen': 'bi-pen-fill',
+        'Airbrush': 'bi-airbrush-fill',
+        'Oil brush': 'bi-brush-oil',
+        'Crayon': 'bi-crayon-fill',
+        'Marker': 'bi-marker-fill',
+        'Natural pencil': 'bi-pencil-fill',
+        'Watercolor brush': 'bi-brush-watercolor'
     };
 
     const dispatch = useAppDispatch();
     const cursorData = useAppSelector(state => state.cursorData);
 
-
-    const changeSize = (size: number) => {
-        dispatch(updateCursorSize(size))
+    const changeBrush = (brush: string) => {
+        // dispatch(updateCursorSize(brush));
     };
 
     return (
@@ -25,27 +32,28 @@ const SizeBlock = () => {
             <div className="wrapper">
                 <div className="dropdown">
                     <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton"
-                            disabled={!Object.keys(size).includes(cursorData.mode)}
-                            aria-expanded='false'
-                            data-bs-toggle="dropdown" >
-                        <Image width={30} height={30} alt="icon" src="/line-weight.svg"/>
+                            disabled={false}
+                            aria-expanded="false"
+                            data-bs-toggle="dropdown">
+                        <Image width={30} height={30} alt="icon" src="/line-weight.svg" />
                     </button>
-                    <ul className={`dropdown-menu ${!Object.keys(size).includes(cursorData.mode) ? '' : '_show'}`} aria-labelledby="dropdownMenuButton">
-                        {size[cursorData.mode]?.map((el) => (
-                            <li key={el}>
+                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {Object.keys(brushTypes).map((brush) => (
+                            <li key={brush}>
                                 <button
                                     className="dropdown-item d-flex align-items-center"
                                     type="button"
-                                    onClick={() => changeSize(el)}
+                                    onClick={() => changeBrush(brush)}
                                 >
-                                    {el}px <div className="bg-light w-100 ms-2" style={{height: el}}></div>
+                                    <Image width={120} height={30} alt="icon" src={`/${brushTypes[brush]}.svg`} />
+                                    <span className="ms-2">{brush}</span>
                                 </button>
                             </li>
                         ))}
                     </ul>
                 </div>
             </div>
-            <p className="text-center mt-auto mb-0">Size</p>
+            <p className="text-center mt-auto mb-0">Brush</p>
         </div>
     );
 };
