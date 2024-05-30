@@ -2,7 +2,7 @@ import React from 'react';
 import ColorBlock from "@/app/components/ColorBlock";
 import ToolsBlock from "@/app/components/ToolsBlock";
 import ImageBlock from "@/app/components/ImageBlock";
-import SizeBlock from "@/app/components/SizeBlock";
+import BrushBlock from "@/app/components/BrushBlock";
 import SelectionBlock from "@/app/components/SelectionBlock";
 
 const ControlPanel = () => {
@@ -11,7 +11,7 @@ const ControlPanel = () => {
             <SelectionBlock/>
             <ImageBlock/>
             <ToolsBlock/>
-            <SizeBlock/>
+            <BrushBlock/>
             <ColorBlock/>
         </div>
     );

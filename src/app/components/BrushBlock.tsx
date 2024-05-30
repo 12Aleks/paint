@@ -1,13 +1,13 @@
 "use client";
 import Image from 'next/image';
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { updateCursorSize } from "@/lib/features/cursorSlice";
+import {SubMode, updateSubMode} from "@/lib/features/cursorSlice";
 
 interface SizeMap {
     [key: string]: string; // Index signature
 }
 
-const SizeBlock = () => {
+const BrushBlock = () => {
     const brushTypes: SizeMap = {
         'Brush': 'bi-brush-fill',
         'Calligraphy brush': 'bi-brush-calligraphy',
@@ -23,8 +23,8 @@ const SizeBlock = () => {
     const dispatch = useAppDispatch();
     const cursorData = useAppSelector(state => state.cursorData);
 
-    const changeBrush = (brush: string) => {
-        // dispatch(updateCursorSize(brush));
+    const changeBrush = (brush: SubMode) => {
+        dispatch(updateSubMode(brush));
     };
 
     return (
@@ -35,18 +35,18 @@ const SizeBlock = () => {
                             disabled={false}
                             aria-expanded="false"
                             data-bs-toggle="dropdown">
-                        <Image width={30} height={30} alt="icon" src="/line-weight.svg" />
+                        <Image width={30} height={40} alt="icon" src="/marker.svg" />
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {Object.keys(brushTypes).map((brush) => (
                             <li key={brush}>
                                 <button
-                                    className="dropdown-item d-flex align-items-center"
+                                    className="dropdown-item d-flex align-items-center justify-content-between"
                                     type="button"
-                                    onClick={() => changeBrush(brush)}
+                                    onClick={() => changeBrush(brushTypes[brush] as SubMode)}
                                 >
-                                    <Image width={120} height={30} alt="icon" src={`/${brushTypes[brush]}.svg`} />
-                                    <span className="ms-2">{brush}</span>
+                                    <span className="me-3">{brush}</span>
+                                    <Image width={80} height={25} alt="icon" src={`/${brushTypes[brush]}.svg`} />
                                 </button>
                             </li>
                         ))}
@@ -58,4 +58,4 @@ const SizeBlock = () => {
     );
 };
 
-export default SizeBlock;
+export default BrushBlock;

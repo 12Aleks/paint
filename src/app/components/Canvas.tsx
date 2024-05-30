@@ -10,6 +10,7 @@ import { rotateCanvas } from "@/mods/rotate";
 import { updateRotate, updateTextInput } from "@/lib/features/paintSlice";
 import { renderText } from "@/mods/text";
 import { searchMode } from "@/mods/search";
+import {drawWithPenAngle} from "@/mods/submode/calligraphy";
 
 interface ICanvas {
     position: { x: number; y: number };
@@ -67,13 +68,18 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
 
         if (event.buttons !== 1 || !ctx) return;
         if (cursorData.mode.includes('bi-pencil-fill')) {
-            ctx.setLineDash([]);
-            ctx.imageSmoothingEnabled = false;
-            ctx.strokeStyle = cursorData.colorFirst;
-            ctx.lineWidth = cursorData.cursorSize;
-            ctx.lineTo(x, y);
-            ctx.stroke();
-            dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+            if(cursorData.submode.includes('bi-brush-fill')) {
+                ctx.setLineDash([]);
+                ctx.imageSmoothingEnabled = false;
+                ctx.strokeStyle = cursorData.colorFirst;
+                ctx.lineWidth = cursorData.cursorSize;
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+            }else if (cursorData.submode.includes('bi-brush-calligraphy')) {
+                drawWithPenAngle(cursorData, ctx, x, y);
+                dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+            }
         } else if (cursorData.mode.includes('bi-eraser')) {
             ctx.setLineDash([]);
             eraserCanvas(ctx, x, y, cursorData.cursorSize);
@@ -113,12 +119,17 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
 
         if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) return;
         if (cursorData.mode.includes('bi-pencil-fill')) {
-            ctx.strokeStyle = cursorData.colorFirst;
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x, y);
-            ctx.stroke();
-            dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+            if(cursorData.submode.includes('bi-brush-fill')) {
+                ctx.strokeStyle = cursorData.colorFirst;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+            }else if (cursorData.submode.includes('bi-brush-calligraphy')) {
+                drawWithPenAngle(cursorData, ctx, x, y);
+                dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+            }
         } else if (cursorData.mode.includes('bi-paint-bucket')) {
             floodFill(ctx, x, y, cursorData.colorFirst);
         } else if (cursorData.mode.includes('bi-eyedropper')) {

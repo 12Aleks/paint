@@ -5,7 +5,7 @@ interface Point {
     y: number;
 }
 export type TextAlign = 'left' | 'right' | 'center';
-
+export type SubMode = 'bi-brush-fill' | 'bi-brush-calligraphy'| 'bi-pen-fill' | 'bi-airbrush-fill'|'bi-brush-oil'|'bi-crayon-fill'|'bi-marker-fill'|'bi-pencil-fill'|'bi-brush-watercolor'
 
 export interface ICursorSlice {
     positionX: number;
@@ -16,6 +16,7 @@ export interface ICursorSlice {
     picker: string;
     cursorSize: number;
     mode: string,
+    submode: SubMode,
     fontFamily: string,
     fontSize: number,
     fonStyle: string,
@@ -36,6 +37,7 @@ const initialState: ICursorSlice = {
     picker: 'violet',
     cursorSize: 1,
     mode: 'bi-pencil-fill',
+    submode: 'bi-brush-fill',
     fontFamily: 'Arial',
     fontSize: 11,
     fonStyle: 'normal',
@@ -69,6 +71,9 @@ export const cursorSlice = createSlice({
         },
         updateMode: (state, action: PayloadAction<string>) => {
             state.mode = action.payload
+        },
+        updateSubMode: (state, action: PayloadAction<SubMode>) => {
+            state.submode = action.payload
         },
         updateFontFamily: (state, action: PayloadAction<string>) => {
             state.fontFamily = action.payload
@@ -110,6 +115,7 @@ export const {
     updateFontSize,
     updateFontFamily,
     setPosition,
+    updateSubMode,
     updateMode,
     updateCursorSize,
     updateDrawing,
