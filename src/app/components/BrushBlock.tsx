@@ -1,30 +1,33 @@
 "use client";
 import Image from 'next/image';
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/hooks";
 import {SubMode, updateSubMode} from "@/lib/features/cursorSlice";
+import {useState} from "react";
 
 interface SizeMap {
     [key: string]: string; // Index signature
 }
 
+const brushTypes: SizeMap = {
+    'Brush': 'bi-brush-fill',
+    'Calligraphy brush': 'bi-brush-calligraphy',
+    'Calligraphy pen': 'bi-pen-calligraphy',
+    'Airbrush': 'bi-airbrush-fill',
+    'Oil brush': 'bi-brush-oil',
+    'Crayon': 'bi-crayon-fill',
+    'Marker': 'bi-marker-fill',
+    'Natural pencil': 'bi-pencil-fill',
+    'Watercolor brush': 'bi-brush-watercolor'
+};
+
 const BrushBlock = () => {
-    const brushTypes: SizeMap = {
-        'Brush': 'bi-brush-fill',
-        'Calligraphy brush': 'bi-brush-calligraphy',
-        'Calligraphy pen': 'bi-pen-fill',
-        'Airbrush': 'bi-airbrush-fill',
-        'Oil brush': 'bi-brush-oil',
-        'Crayon': 'bi-crayon-fill',
-        'Marker': 'bi-marker-fill',
-        'Natural pencil': 'bi-pencil-fill',
-        'Watercolor brush': 'bi-brush-watercolor'
-    };
-
     const dispatch = useAppDispatch();
-    const cursorData = useAppSelector(state => state.cursorData);
+    const [isActive, setActive] = useState<string>('');
 
-    const changeBrush = (brush: SubMode) => {
+    const changeBrush = (brush: SubMode, size?: number) => {
         dispatch(updateSubMode(brush));
+        // size && dispatch(updateFontSize(size))
+        setActive(brush)
     };
 
     return (
@@ -39,11 +42,11 @@ const BrushBlock = () => {
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {Object.keys(brushTypes).map((brush) => (
-                            <li key={brush}>
+                            <li key={brush} className={`${brushTypes[brush].includes(isActive) ? 'active': ''}`}>
                                 <button
                                     className="dropdown-item d-flex align-items-center justify-content-between"
                                     type="button"
-                                    onClick={() => changeBrush(brushTypes[brush] as SubMode)}
+                                    onClick={() => changeBrush(brushTypes[brush] as SubMode )}
                                 >
                                     <span className="me-3">{brush}</span>
                                     <Image width={80} height={25} alt="icon" src={`/${brushTypes[brush]}.svg`} />

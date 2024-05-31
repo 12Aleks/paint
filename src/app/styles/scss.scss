@@ -130,7 +130,19 @@ $conic-gradient: conic-gradient(
 
     .dropdown-item:hover, .dropdown-item:focus {
       background: $button-active-gray;
-      border-left: 3px solid cornflowerblue;
+    }
+
+    li.active{
+      position: relative;
+      &:after{
+        content: "|";
+        font-weight: bold;
+        color: cornflowerblue;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
     }
 
     .dropdown-toggle {
@@ -444,6 +456,10 @@ textarea.textMode, .textMode:focus {
       border: 4px solid #555;
       cursor: pointer;
     }
+  }
+  img{
+    transform: rotate(-90deg);
+    padding: 0 4px 0 2px;
   }
 }
 

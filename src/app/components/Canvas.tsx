@@ -10,7 +10,7 @@ import { rotateCanvas } from "@/mods/rotate";
 import { updateRotate, updateTextInput } from "@/lib/features/paintSlice";
 import { renderText } from "@/mods/text";
 import { searchMode } from "@/mods/search";
-import {drawWithPenAngle} from "@/mods/submode/calligraphy";
+import {drawWithBrushAngle} from "@/mods/submode/calligraphy";
 
 interface ICanvas {
     position: { x: number; y: number };
@@ -27,7 +27,7 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
     const [savedImageData, setSavedImageData] = useState<ImageData | null>(null);
     const [selection, setSelection] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
     const [isDragging, setIsDragging] = useState<boolean>(false);
-
+    const [prevPosition, setPrevPosition] = useState<{ x: number; y: number } | null>(null);
     useEffect(() => {
         if (data.imageData) {
             const canvas = canvasRef.current;
@@ -77,7 +77,12 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
                 ctx.stroke();
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
             }else if (cursorData.submode.includes('bi-brush-calligraphy')) {
-                drawWithPenAngle(cursorData, ctx, x, y);
+                prevPosition &&  drawWithBrushAngle(cursorData, ctx, x, y, prevPosition.x, prevPosition.y, 45);
+                setPrevPosition({ x, y });
+                dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+            }else if (cursorData.submode.includes('bi-pen-calligraphy')) {
+                prevPosition &&  drawWithBrushAngle(cursorData, ctx, x, y, prevPosition.x, prevPosition.y, -45);
+                setPrevPosition({ x, y });
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
             }
         } else if (cursorData.mode.includes('bi-eraser')) {
@@ -127,7 +132,12 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
                 ctx.stroke();
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
             }else if (cursorData.submode.includes('bi-brush-calligraphy')) {
-                drawWithPenAngle(cursorData, ctx, x, y);
+                setPrevPosition(null);
+                setPrevPosition({ x, y });
+                dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+            }else if (cursorData.submode.includes('bi-pen-calligraphy')) {
+                setPrevPosition(null);
+                setPrevPosition({ x, y });
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
             }
         } else if (cursorData.mode.includes('bi-paint-bucket')) {
@@ -180,13 +190,16 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
             const newX = x - (selection.width / 2);
             const newY = y - (selection.height / 2);
 
-            ctx.putImageData(savedImageData!, newX, newY); // Place the image at new location
+            ctx.putImageData(savedImageData!, newX, newY);
 
-            // Clear selection
             setOrigin(null);
             setCurrentPosition(null);
             setSelection(null);
             setSavedImageData(null);
+        }
+
+        if (cursorData.submode.includes('bi-brush-calligraphy')) {
+            setPrevPosition(null);
         }
     };
 

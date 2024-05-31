@@ -2,6 +2,8 @@ import React, {ChangeEvent, FC} from 'react';
 import {updateCursorSize} from "@/lib/features/cursorSlice";
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {IShow} from "@/app/components/Modal";
+import Image from "next/image";
+import {Tooltip} from "@nextui-org/tooltip";
 
 const SizeModal: FC<IShow> = ({show}) => {
     const cursorData = useAppSelector(state => state.cursorData);
@@ -17,6 +19,7 @@ const SizeModal: FC<IShow> = ({show}) => {
 
     return (
         <div className={`size-modal ${show ? 'show' : ''}`}>
+            {/*<Tooltip content="I am a tooltip" color="primary">*/}
             <input className="ms-2 me-2 custom-vertical-range"
                    type="range"
                    min="0"
@@ -25,6 +28,8 @@ const SizeModal: FC<IShow> = ({show}) => {
                    value={cursorData.cursorSize}
                    onChange={changeSize}
             />
+            {/*</Tooltip>*/}
+            <Image width={25} height={25} alt="icon" src='/line-weight.svg' />
         </div>
     )
 };

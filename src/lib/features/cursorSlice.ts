@@ -5,7 +5,7 @@ interface Point {
     y: number;
 }
 export type TextAlign = 'left' | 'right' | 'center';
-export type SubMode = 'bi-brush-fill' | 'bi-brush-calligraphy'| 'bi-pen-fill' | 'bi-airbrush-fill'|'bi-brush-oil'|'bi-crayon-fill'|'bi-marker-fill'|'bi-pencil-fill'|'bi-brush-watercolor'
+export type SubMode = 'bi-brush-fill' | 'bi-brush-calligraphy'| 'bi-pen-calligraphy' | 'bi-airbrush-fill'|'bi-brush-oil'|'bi-crayon-fill'|'bi-marker-fill'|'bi-pencil-fill'|'bi-brush-watercolor'
 
 export interface ICursorSlice {
     positionX: number;
