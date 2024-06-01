@@ -1,6 +1,6 @@
 "use client";
 import Image from 'next/image';
-import { useAppDispatch } from "@/lib/hooks";
+import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {SubMode, updateSubMode} from "@/lib/features/cursorSlice";
 import {useState} from "react";
 
@@ -22,7 +22,9 @@ const brushTypes: SizeMap = {
 
 const BrushBlock = () => {
     const dispatch = useAppDispatch();
+    const cursorData = useAppSelector(state => state.cursorData);
     const [isActive, setActive] = useState<string>('');
+
 
     const changeBrush = (brush: SubMode, size?: number) => {
         dispatch(updateSubMode(brush));
@@ -38,11 +40,20 @@ const BrushBlock = () => {
                             disabled={false}
                             aria-expanded="false"
                             data-bs-toggle="dropdown">
-                        <Image width={30} height={40} alt="icon" src="/marker.svg" />
+                        {
+                            ['bi-brush-fill', 'bi-brush-calligraphy'].includes(cursorData.submode)?
+                                <Image width={30} height={40} alt="icon" src="/marker.svg" />:
+                            ['bi-pen-calligraphy'].includes(cursorData.submode) ?
+                                <Image width={30} height={40} alt="icon" src="/pen.svg" />:
+                                <Image width={30} height={40} alt="icon" src="/marker.svg" />
+
+                        }
+
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
                         {Object.keys(brushTypes).map((brush) => (
-                            <li key={brush} className={`${brushTypes[brush].includes(isActive) ? 'active': ''}`}>
+                            <li key={brush} className={`${cursorData.submode.includes(brushTypes[brush]) ? 'active': ''}`}>
                                 <button
                                     className="dropdown-item d-flex align-items-center justify-content-between"
                                     type="button"
