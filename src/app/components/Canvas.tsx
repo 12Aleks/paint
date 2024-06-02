@@ -10,7 +10,7 @@ import { rotateCanvas } from "@/mods/rotate";
 import { updateRotate, updateTextInput } from "@/lib/features/paintSlice";
 import { renderText } from "@/mods/text";
 import { searchMode } from "@/mods/search";
-import {drawWithBrushAngle} from "@/mods/submode/calligraphy";
+import { drawWithBrushAngle } from "@/mods/submode/calligraphy";
 
 interface ICanvas {
     position: { x: number; y: number };
@@ -22,16 +22,20 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
     const data = useAppSelector(state => state.data);
     const cursorData = useAppSelector(state => state.cursorData);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const cursorLayerRef = useRef<HTMLDivElement>(null);
     const [origin, setOrigin] = useState<{ x: number; y: number } | null>(null);
     const [currentPosition, setCurrentPosition] = useState<{ x: number; y: number } | null>(null);
     const [savedImageData, setSavedImageData] = useState<ImageData | null>(null);
     const [selection, setSelection] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [prevPosition, setPrevPosition] = useState<{ x: number; y: number } | null>(null);
+
     useEffect(() => {
         if (data.imageData) {
             const canvas = canvasRef.current;
-            const ctx = canvas?.getContext('2d')!;
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
             const img = new Image();
             img.onload = () => {
                 ctx.drawImage(img, 0, 0, data.sizeWidth, data.sizeHeight);
@@ -46,29 +50,48 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
     }, [data.imageData]);
 
     useEffect(() => {
-        data.flip.includes('horizontal') && flipHorizontal(canvasRef);
-        data.flip.includes('vertical') && flipVertical(canvasRef);
+        if (!canvasRef.current) return;
+        if (data.flip.includes('horizontal')) flipHorizontal(canvasRef);
+        if (data.flip.includes('vertical')) flipVertical(canvasRef);
     }, [data.flip]);
 
     useEffect(() => {
-        data.rotate && rotateCanvas(canvasRef, data.rotate);
-        dispatch(updateRotate(0));
+        if (!canvasRef.current) return;
+        if (data.rotate) {
+            rotateCanvas(canvasRef, data.rotate);
+            dispatch(updateRotate(0));
+        }
     }, [data.rotate]);
 
     useEffect(() => {
-        !cursorData.mode.includes('bi-fonts') && dispatch(updateTextArea(false));
+        if (!cursorData.mode.includes('bi-fonts')) dispatch(updateTextArea(false));
     }, [cursorData.mode]);
 
     const handleMouseMove: MouseEventHandler<HTMLCanvasElement> = (event) => {
         const canvas = canvasRef.current;
-        const ctx = canvas?.getContext('2d')!;
-        const rect = canvas?.getBoundingClientRect();
-        const x = Math.round(event.clientX - (rect?.left || 0));
-        const y = Math.round(event.clientY - (rect?.top || 0));
+        const cursorLayer = cursorLayerRef.current;
+        if (!canvas || !cursorLayer) return;
 
-        if (event.buttons !== 1 || !ctx) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.round(event.clientX - rect.left);
+        const y = Math.round(event.clientY - rect.top);
+
+        if (x >= 0 && x < canvas.width && y >= 0 && y < canvas.height) {
+            cursorLayer.style.display = 'block';
+            cursorLayer.style.left = `${x}px`;
+            cursorLayer.style.top = `${y}px`;
+            cursorLayer.style.width = `${cursorData.cursorSize}px`;
+            cursorLayer.style.height = `${cursorData.cursorSize}px`;
+        } else {
+            cursorLayer.style.display = 'none';
+        }
+
+        if (event.buttons !== 1) return;
         if (cursorData.mode.includes('bi-pencil-fill')) {
-            if(cursorData.submode.includes('bi-brush-fill')) {
+            if (cursorData.submode.includes('bi-brush-fill')) {
                 ctx.setLineDash([]);
                 ctx.imageSmoothingEnabled = false;
                 ctx.strokeStyle = cursorData.colorFirst;
@@ -76,12 +99,12 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
                 ctx.lineTo(x, y);
                 ctx.stroke();
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
-            }else if (cursorData.submode.includes('bi-brush-calligraphy')) {
-                prevPosition &&  drawWithBrushAngle(cursorData, ctx, x, y, prevPosition.x, prevPosition.y, 45);
+            } else if (cursorData.submode.includes('bi-brush-calligraphy')) {
+                prevPosition && drawWithBrushAngle(cursorData, ctx, x, y, prevPosition.x, prevPosition.y, 45);
                 setPrevPosition({ x, y });
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
-            }else if (cursorData.submode.includes('bi-pen-calligraphy')) {
-                prevPosition &&  drawWithBrushAngle(cursorData, ctx, x, y, prevPosition.x, prevPosition.y, -45);
+            } else if (cursorData.submode.includes('bi-pen-calligraphy')) {
+                prevPosition && drawWithBrushAngle(cursorData, ctx, x, y, prevPosition.x, prevPosition.y, -45);
                 setPrevPosition({ x, y });
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
             }
@@ -110,6 +133,10 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
     };
 
     const handleMouseLeave = () => {
+        const cursorLayer = cursorLayerRef.current;
+        if (cursorLayer) {
+            cursorLayer.style.display = 'none';
+        }
         dispatch(updateDrawing([]));
         dispatch(setPosition([0, 0]));
     };
@@ -117,25 +144,27 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
     const handleMouseDown = (event: MouseEvent<HTMLCanvasElement>) => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        const ctx = canvas?.getContext('2d')!;
-        const rect = canvas?.getBoundingClientRect();
-        const x = Math.round(event.clientX - (rect?.left || 0));
-        const y = Math.round(event.clientY - (rect?.top || 0));
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.round(event.clientX - rect.left);
+        const y = Math.round(event.clientY - rect.top);
 
         if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) return;
         if (cursorData.mode.includes('bi-pencil-fill')) {
-            if(cursorData.submode.includes('bi-brush-fill')) {
+            if (cursorData.submode.includes('bi-brush-fill')) {
                 ctx.strokeStyle = cursorData.colorFirst;
                 ctx.beginPath();
                 ctx.moveTo(x, y);
                 ctx.lineTo(x, y);
                 ctx.stroke();
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
-            }else if (cursorData.submode.includes('bi-brush-calligraphy')) {
+            } else if (cursorData.submode.includes('bi-brush-calligraphy')) {
                 setPrevPosition(null);
                 setPrevPosition({ x, y });
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
-            }else if (cursorData.submode.includes('bi-pen-calligraphy')) {
+            } else if (cursorData.submode.includes('bi-pen-calligraphy')) {
                 setPrevPosition(null);
                 setPrevPosition({ x, y });
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
@@ -181,10 +210,12 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
 
         const canvas = canvasRef.current;
         if (!canvas) return;
-        const ctx = canvas?.getContext('2d')!;
-        const rect = canvas?.getBoundingClientRect();
-        const x = Math.round(event.clientX - (rect?.left || 0));
-        const y = Math.round(event.clientY - (rect?.top || 0));
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.round(event.clientX - rect.left);
+        const y = Math.round(event.clientY - rect.top);
 
         if (selection) {
             const newX = x - (selection.width / 2);
@@ -210,16 +241,28 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
     }, [origin, currentPosition]);
 
     return (
-        <canvas
-            ref={canvasRef}
-            width={data.sizeWidth}
-            height={data.sizeHeight}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            onMouseUp={handleMouseUp}
-            className={`position-absolute top-0 left-0 right-0 bottom-0 ${cursorData.mode}`}
-        />
+        <div style={{ position: 'relative' }}>
+            <canvas
+                ref={canvasRef}
+                width={data.sizeWidth}
+                height={data.sizeHeight}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                onMouseUp={handleMouseUp}
+                className={`position-absolute top-0 left-0 right-0 bottom-0 ${cursorData.mode}`}
+            />
+            <div
+                ref={cursorLayerRef}
+                style={{
+                    position: 'absolute',
+                    background: cursorData.colorFirst,
+                    borderRadius: '50%',
+                    pointerEvents: 'none',
+                    transform: 'translate(-50%, -50%)',
+                }}
+            />
+        </div>
     );
 };
 

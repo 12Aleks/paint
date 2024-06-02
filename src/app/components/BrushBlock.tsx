@@ -1,23 +1,28 @@
 "use client";
 import Image from 'next/image';
-import {useAppDispatch, useAppSelector} from "@/lib/hooks";
-import {SubMode, updateSubMode} from "@/lib/features/cursorSlice";
-import {useState} from "react";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import {SubMode, updateCursorSize, updateSubMode} from "@/lib/features/cursorSlice";
+import { useState } from "react";
+
+interface Brush {
+    icon: string;
+    size: number;
+}
 
 interface SizeMap {
-    [key: string]: string; // Index signature
+    [key: string]: Brush;
 }
 
 const brushTypes: SizeMap = {
-    'Brush': 'bi-brush-fill',
-    'Calligraphy brush': 'bi-brush-calligraphy',
-    'Calligraphy pen': 'bi-pen-calligraphy',
-    'Airbrush': 'bi-airbrush-fill',
-    'Oil brush': 'bi-brush-oil',
-    'Crayon': 'bi-crayon-fill',
-    'Marker': 'bi-marker-fill',
-    'Natural pencil': 'bi-pencil-fill',
-    'Watercolor brush': 'bi-brush-watercolor'
+    'Brush': { 'icon': 'bi-brush-fill', 'size': 3 },
+    'Calligraphy brush': { 'icon': 'bi-brush-calligraphy', 'size': 5 },
+    'Calligraphy pen': { 'icon': 'bi-pen-calligraphy', 'size': 5 },
+    'Airbrush': { 'icon': 'bi-airbrush-fill', 'size': 1 },
+    'Oil brush': { 'icon': 'bi-brush-oil', 'size': 1 },
+    'Crayon': { 'icon': 'bi-crayon-fill', 'size': 1 },
+    'Marker': { 'icon': 'bi-marker-fill', 'size': 1 },
+    'Natural pencil': { 'icon': 'bi-pencil-fill', 'size': 1 },
+    'Watercolor brush': { 'icon': 'bi-brush-watercolor', 'size': 1 }
 };
 
 const BrushBlock = () => {
@@ -25,11 +30,10 @@ const BrushBlock = () => {
     const cursorData = useAppSelector(state => state.cursorData);
     const [isActive, setActive] = useState<string>('');
 
-
-    const changeBrush = (brush: SubMode, size?: number) => {
+    const changeBrush = (brush: SubMode, size: number) => {
         dispatch(updateSubMode(brush));
-        // size && dispatch(updateFontSize(size))
-        setActive(brush)
+        dispatch(updateCursorSize(size));
+        setActive(brush);
     };
 
     return (
@@ -41,26 +45,23 @@ const BrushBlock = () => {
                             aria-expanded="false"
                             data-bs-toggle="dropdown">
                         {
-                            ['bi-brush-fill', 'bi-brush-calligraphy'].includes(cursorData.submode)?
-                                <Image width={30} height={40} alt="icon" src="/marker.svg" />:
-                            ['bi-pen-calligraphy'].includes(cursorData.submode) ?
-                                <Image width={30} height={40} alt="icon" src="/pen.svg" />:
-                                <Image width={30} height={40} alt="icon" src="/marker.svg" />
-
+                            ['bi-brush-fill', 'bi-brush-calligraphy'].includes(cursorData.submode) ?
+                                <Image width={30} height={40} alt="icon" src="/marker.svg" /> :
+                                ['bi-pen-calligraphy'].includes(cursorData.submode) ?
+                                    <Image width={30} height={40} alt="icon" src="/pen.svg" /> :
+                                    <Image width={30} height={40} alt="icon" src="/marker.svg" />
                         }
-
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
                         {Object.keys(brushTypes).map((brush) => (
-                            <li key={brush} className={`${cursorData.submode.includes(brushTypes[brush]) ? 'active': ''}`}>
+                            <li key={brush} className={`${cursorData.submode.includes(brushTypes[brush].icon) ? 'active' : ''}`}>
                                 <button
                                     className="dropdown-item d-flex align-items-center justify-content-between"
                                     type="button"
-                                    onClick={() => changeBrush(brushTypes[brush] as SubMode )}
+                                    onClick={() => changeBrush(brushTypes[brush].icon as SubMode, brushTypes[brush].size)}
                                 >
                                     <span className="me-3">{brush}</span>
-                                    <Image width={80} height={25} alt="icon" src={`/${brushTypes[brush]}.svg`} />
+                                    <Image width={80} height={25} alt="icon" src={`/${brushTypes[brush].icon}.svg`} />
                                 </button>
                             </li>
                         ))}

@@ -69,7 +69,7 @@ $conic-gradient: conic-gradient(
     padding: 15px;
     font-size: 14px;
     letter-spacing: 1px;
-
+    cursor: pointer;
     .wrapper {
       display: grid;
       gap: 8px;
@@ -460,6 +460,7 @@ textarea.textMode, .textMode:focus {
   img{
     transform: rotate(-90deg);
     padding: 0 4px 0 2px;
+    opacity: .5;
   }
 }
 
