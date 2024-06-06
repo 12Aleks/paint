@@ -40,19 +40,19 @@ const BrushBlock = () => {
         <div className="size_block d-inline-flex flex-column h-100 border-start border-2-secondary ms-3">
             <div className="wrapper">
                 <div className="dropdown">
-                    <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton"
+                    <button className="btn dropdown-toggle m-auto d-block" type="button" id="dropdownMenuButton"
                             disabled={false}
                             aria-expanded="false"
                             data-bs-toggle="dropdown">
                         {
                             ['bi-brush-fill', 'bi-brush-calligraphy'].includes(cursorData.submode) ?
-                                <Image width={30} height={40} alt="icon" src="/marker.svg" /> :
+                                <Image width={26} height={36} alt="icon" src="/marker.svg" /> :
                                 ['bi-pen-calligraphy'].includes(cursorData.submode) ?
-                                    <Image width={30} height={40} alt="icon" src="/pen.svg" /> :
-                                    <Image width={30} height={40} alt="icon" src="/marker.svg" />
+                                    <Image width={26} height={36} alt="icon" src="/pen.svg" /> :
+                                    <Image width={26} height={36} alt="icon" src="/marker.svg" />
                         }
                     </button>
-                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <ul className="dropdown-menu dropdown-menu-center" aria-labelledby="dropdownMenuButton">
                         {Object.keys(brushTypes).map((brush) => (
                             <li key={brush} className={`${cursorData.submode.includes(brushTypes[brush].icon) ? 'active' : ''}`}>
                                 <button
@@ -68,7 +68,7 @@ const BrushBlock = () => {
                     </ul>
                 </div>
             </div>
-            <p className="text-center mt-auto mb-0">Brush</p>
+            <p className="text-center mt-auto mb-0">Brushes</p>
         </div>
     );
 };

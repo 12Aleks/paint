@@ -1,5 +1,6 @@
 $text-color: #f8f9fa;
 $button-active-gray: #757575;
+$active-border: cornflowerblue;
 $conic-gradient: conic-gradient(
                 hsl(0, 100%, 50%),
                 hsl(30, 100%, 50%),
@@ -39,7 +40,7 @@ $conic-gradient: conic-gradient(
       }
 
       &.active {
-        border: 2px solid cornflowerblue;
+        border: 2px solid $active-border;
       }
     }
   }
@@ -128,6 +129,11 @@ $conic-gradient: conic-gradient(
       color: $text-color;
     }
 
+    ul.dropdown-menu.dropdown-menu-center.show{
+      left: 50% !important;
+      transform: translate3d(-50%, 69.3333px, 0) !important;
+    }
+
     .dropdown-item:hover, .dropdown-item:focus {
       background: $button-active-gray;
     }
@@ -137,7 +143,7 @@ $conic-gradient: conic-gradient(
       &:after{
         content: "|";
         font-weight: bold;
-        color: cornflowerblue;
+        color: $active-border;
         position: absolute;
         left: 0;
         top: 50%;
@@ -146,7 +152,7 @@ $conic-gradient: conic-gradient(
     }
 
     .dropdown-toggle {
-      height: 75px;
+      height: 67px;
       padding: 5px;
 
       img {
@@ -155,13 +161,19 @@ $conic-gradient: conic-gradient(
         bottom: 0;
         fill: white;
       }
-
+      &.show{
+        border: 2px solid $active-border;
+        &:hover, &:focus {
+          background: $button-active-gray;
+        }
+      }
       &:after {
         position: relative;
         margin: 0 auto;
         color: $text-color;
       }
     }
+
   }
 
   .selection_block{
@@ -348,7 +360,7 @@ footer {
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: cornflowerblue;
+      background: $active-border;
       border: 4px solid #555;
       cursor: pointer;
     }
@@ -452,7 +464,7 @@ textarea.textMode, .textMode:focus {
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: cornflowerblue;
+      background: $active-border;
       border: 4px solid #555;
       cursor: pointer;
     }
