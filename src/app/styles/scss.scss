@@ -154,7 +154,9 @@ $conic-gradient: conic-gradient(
     .dropdown-toggle {
       height: 67px;
       padding: 5px;
-
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
       img {
         position: relative;
         display: block;
@@ -180,6 +182,7 @@ $conic-gradient: conic-gradient(
     text-align: center;
     button{
       div{
+        margin-top: 6px;
         width: 26px;
         height: 26px;
         border: 1px dashed white;

@@ -18,13 +18,12 @@ const SelectionBlock = () => {
         <div className="selection_block d-inline-flex flex-column h-100  ms-3">
             <div className="wrapper">
                 <div className="dropdown" onClick={() => changeMode()}>
-                    <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton"
+                    <button className="btn dropdown-toggle m-auto" type="button" id="dropdownMenuButton"
                             aria-expanded='false'
                             data-bs-toggle="dropdown">
                             <div></div>
                     </button>
-                    <ul className={`dropdown-menu`}
-                        aria-labelledby="dropdownMenuButton">
+                    <ul className="dropdown-menu dropdown-menu-center" aria-labelledby="dropdownMenuButton">
                         {select.map((el) => (
                             <li key={el}>
                                 <button

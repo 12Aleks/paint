@@ -19,7 +19,7 @@ const SizeModal: FC<IShow> = ({show}) => {
 
     return (
         <div className={`size-modal ${show ? 'show' : ''}`}>
-            {/*<Tooltip content="I am a tooltip" color="primary">*/}
+            <Tooltip  content={`${cursorData.cursorSize}px`} color="primary" placement="bottom">
             <input className="ms-2 me-2 custom-vertical-range"
                    type="range"
                    min="0"
@@ -28,7 +28,7 @@ const SizeModal: FC<IShow> = ({show}) => {
                    value={cursorData.cursorSize}
                    onChange={changeSize}
             />
-            {/*</Tooltip>*/}
+            </Tooltip>
             <Image width={25} height={25} alt="icon" src='/line-weight.svg' />
         </div>
     )

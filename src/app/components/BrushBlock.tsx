@@ -40,7 +40,7 @@ const BrushBlock = () => {
         <div className="size_block d-inline-flex flex-column h-100 border-start border-2-secondary ms-3">
             <div className="wrapper">
                 <div className="dropdown">
-                    <button className="btn dropdown-toggle m-auto d-block" type="button" id="dropdownMenuButton"
+                    <button className="btn dropdown-toggle m-auto" type="button" id="dropdownMenuButton"
                             disabled={false}
                             aria-expanded="false"
                             data-bs-toggle="dropdown">
