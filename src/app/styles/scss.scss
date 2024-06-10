@@ -448,6 +448,9 @@ textarea.textMode, .textMode:focus {
 }
 
 .size-modal {
+   .modal_wrapper{
+
+   }
     position: fixed;
     top: calc(50vh + 23vh);
     left: 15px;
@@ -476,6 +479,23 @@ textarea.textMode, .textMode:focus {
     transform: rotate(-90deg);
     padding: 0 4px 0 2px;
     opacity: .5;
+  }
+
+  .range-value{
+    position: fixed;
+    bottom: -40px;
+    //left: 70px;
+    z-index: 1000;
+    transform: rotate(90deg);
+    width: auto;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    padding: 2px 5px;
+    background: $button-active-gray;
+    color: $text-color;
+    font-size: 14px;
+    border-radius: 4px;
   }
 }
 
