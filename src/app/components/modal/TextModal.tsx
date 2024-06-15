@@ -37,7 +37,7 @@ const fontName : string[] = [
 const textDecorations: string[] = ['bold', 'italic', 'underline', 'strikethrough'];
 
 
-const Modal: FC<IShow> = ({show}) => {
+const TextModal: FC<IShow> = ({show}) => {
     const cursorData = useAppSelector(state => state.cursorData);
     const dispatch = useAppDispatch();
     const [active, setActive] = useState<string[]>([]);
@@ -143,4 +143,4 @@ const Modal: FC<IShow> = ({show}) => {
     );
 };
 
-export default Modal;
+export default TextModal;

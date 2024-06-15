@@ -1,6 +1,6 @@
 "use client"
 
-import ToolIcon from "@/app/components/ToolIcon";
+import ToolIcon from "./ToolIcon";
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {updateCursorSize, updateMode} from "@/lib/features/cursorSlice";
 

@@ -50,12 +50,14 @@ $conic-gradient: conic-gradient(
     border-color: $button-active-gray;
     letter-spacing: 1px;
     font-size: 12px;
+    cursor: pointer;
   }
 
   ul.dropdown-menu {
     border-radius: 5px;
 
     .dropdown-item {
+      cursor: pointer;
       &:hover, &:focus {
         background: $button-active-gray;
       }

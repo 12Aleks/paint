@@ -1,12 +1,12 @@
 'use client'
-import { FC, useState } from 'react';
 
+import { FC, useState } from 'react';
 import { setPath } from "@/lib/features/paintSlice";
-import Canvas from "@/app/components/Canvas";
-import Modal from "@/app/components/Modal";
-import TextArea from "@/app/components/TextArea";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import SizeModal from "@/app/components/SizeModal";
+import Canvas from "@/app/components/Canvas";
+import TextArea from "@/app/components/TextArea";
+import SizeModal from "@/app/components/modal/SizeModal";
+import TextModal from "@/app/components/modal/TextModal";
 
 interface ImagePainterProps {}
 
@@ -24,7 +24,7 @@ const ImagePainter: FC<ImagePainterProps> = () => {
 
     return (
         <>
-            <Modal show={cursorData.mode.includes('bi-fonts')}/>
+            <TextModal show={cursorData.mode.includes('bi-fonts')}/>
             <SizeModal show={cursorData.mode.includes('bi-pencil-fill') || cursorData.mode.includes('bi-eraser')}/>
             <div className='position-relative overflow-hidden'>
                 <Canvas position={inputPosition}

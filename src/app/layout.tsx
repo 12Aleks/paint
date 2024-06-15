@@ -7,8 +7,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import './styles/scss.scss'
 import Navbar from "@/app/components/Navbar";
 import StoreProvider from "@/app/StoreProvider";
-import Footer from "@/app/components/Footer";
-import ControlPanel from "@/app/components/ControlPanel";
+import ControlPanel from "@/app/components/toolbar/ControlPanel";
+import Footer from "@/app/components/footer/Footer";
 
 
 const inter = Inter({subsets: ["latin"]});

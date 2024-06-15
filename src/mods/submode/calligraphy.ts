@@ -24,8 +24,5 @@ export const drawWithBrushAngle = (cursorData: ICursorSlice, ctx: CanvasRenderin
     ctx.fillStyle = cursorData.colorFirst;
     ctx.fill();
 
-
-
-
 };
 

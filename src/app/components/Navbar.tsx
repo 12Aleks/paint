@@ -26,7 +26,7 @@ const Navbar= () => {
                     <button className="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         File
                     </button>
-                    <ul className="dropdown-menu bg-dark">
+                    <ul className="dropdown-menu bg-dark ">
                         <li onClick={createImage} className="dropdown-item">New</li>
                         <li><a className="dropdown-item" href="#">Another action</a></li>
                         <li><a className="dropdown-item" href="#">Something else here</a></li>

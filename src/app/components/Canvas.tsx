@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, MouseEvent, MouseEventHandler, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Dispatch, FC, MouseEvent, MouseEventHandler, SetStateAction, useEffect, useRef, useState } from 'react';
 import { setPosition, updateDrawing, updateCursorMainColor, updateTextArea } from "@/lib/features/cursorSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { floodFill } from "@/mods/fill";
@@ -11,6 +11,7 @@ import { updateRotate, updateTextInput } from "@/lib/features/paintSlice";
 import { renderText } from "@/mods/text";
 import { searchMode } from "@/mods/search";
 import { drawWithBrushAngle } from "@/mods/submode/calligraphy";
+import {drawWithOil} from "@/mods/submode/oil";
 
 interface ICanvas {
     position: { x: number; y: number };
@@ -107,6 +108,10 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
                 prevPosition && drawWithBrushAngle(cursorData, ctx, x, y, prevPosition.x, prevPosition.y, -45);
                 setPrevPosition({ x, y });
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+            } else if (cursorData.submode.includes('bi-brush-oil')) {
+                prevPosition && drawWithOil(cursorData, ctx, x, y, prevPosition.x, prevPosition.y, 0);
+                setPrevPosition({ x, y });
+                dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
             }
         } else if (cursorData.mode.includes('bi-eraser')) {
             ctx.setLineDash([]);
@@ -168,6 +173,8 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
                 setPrevPosition(null);
                 setPrevPosition({ x, y });
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+            } else if (cursorData.submode.includes('bi-brush-oil')) {
+
             }
         } else if (cursorData.mode.includes('bi-paint-bucket')) {
             floodFill(ctx, x, y, cursorData.colorFirst);
