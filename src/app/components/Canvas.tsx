@@ -109,7 +109,7 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
                 setPrevPosition({ x, y });
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
             } else if (cursorData.submode.includes('bi-brush-oil')) {
-                prevPosition && drawWithOil(cursorData, ctx, x, y, prevPosition.x, prevPosition.y, 0);
+                prevPosition && drawWithOil(cursorData, ctx, x, y, prevPosition.x, prevPosition.y, 90);
                 setPrevPosition({ x, y });
                 dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
             }
@@ -164,17 +164,19 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
                 ctx.moveTo(x, y);
                 ctx.lineTo(x, y);
                 ctx.stroke();
-                dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+                dispatch(updateDrawing([{ x, y }]));
             } else if (cursorData.submode.includes('bi-brush-calligraphy')) {
                 setPrevPosition(null);
                 setPrevPosition({ x, y });
-                dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+                dispatch(updateDrawing([{ x, y }]));
             } else if (cursorData.submode.includes('bi-pen-calligraphy')) {
                 setPrevPosition(null);
                 setPrevPosition({ x, y });
-                dispatch(updateDrawing([...cursorData.drawing, { x, y }]));
+                dispatch(updateDrawing([{ x, y }]));
             } else if (cursorData.submode.includes('bi-brush-oil')) {
-
+                setPrevPosition(null);
+                setPrevPosition({ x, y });
+                dispatch(updateDrawing([{ x, y }]));
             }
         } else if (cursorData.mode.includes('bi-paint-bucket')) {
             floodFill(ctx, x, y, cursorData.colorFirst);

@@ -18,7 +18,7 @@ const brushTypes: SizeMap = {
     'Calligraphy brush': { 'icon': 'bi-brush-calligraphy', 'size': 5 },
     'Calligraphy pen': { 'icon': 'bi-pen-calligraphy', 'size': 5 },
     'Airbrush': { 'icon': 'bi-airbrush-fill', 'size': 1 },
-    'Oil brush': { 'icon': 'bi-brush-oil', 'size': 1 },
+    'Oil brush': { 'icon': 'bi-brush-oil', 'size': 30 },
     'Crayon': { 'icon': 'bi-crayon-fill', 'size': 1 },
     'Marker': { 'icon': 'bi-marker-fill', 'size': 1 },
     'Natural pencil': { 'icon': 'bi-pencil-fill', 'size': 1 },

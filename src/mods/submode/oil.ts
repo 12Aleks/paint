@@ -13,15 +13,15 @@ export const drawWithOil = (
     const dx = Math.cos((angle * Math.PI) / 180) * halfWidth;
     const dy = Math.sin((angle * Math.PI) / 180) * halfWidth;
 
-    // Add randomness to the stroke direction and length
-    const randomFactor = Math.random() * 0.6 + 0.7;
+    // Adjust randomness factors
+    const randomFactor = Math.random() * 0.3 + 0.85;
     const randDX = dx * randomFactor;
     const randDY = dy * randomFactor;
 
     // Vary the opacity and thickness of the brushstrokes
-    const baseOpacity = 0.7;
-    const opacity = baseOpacity + Math.random() * 0.3;
-    const lineWidth = cursorData.cursorSize * (0.7 + Math.random() * 0.3);
+    const baseOpacity = 0.85;
+    const opacity = baseOpacity + Math.random() * 0.15;
+    const lineWidth = cursorData.cursorSize * (0.85 + Math.random() * 0.15);
 
     // Adjust drawing method to minimize jagged edges
     ctx.beginPath();
