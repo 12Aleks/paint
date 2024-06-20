@@ -7,7 +7,7 @@ import { eraserCanvas } from "@/mods/eraser";
 import { zoomPlus } from "@/mods/zoom";
 import { flipHorizontal, flipVertical } from "@/mods/flip";
 import { rotateCanvas } from "@/mods/rotate";
-import { updateRotate, updateTextInput } from "@/lib/features/paintSlice";
+import {getRef, updateRotate, updateTextInput} from "@/lib/features/paintSlice";
 import { renderText } from "@/mods/text";
 import { searchMode } from "@/mods/search";
 import { drawWithBrushAngle } from "@/mods/submode/calligraphy";
@@ -47,6 +47,8 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
                 });
             };
             img.src = data.imageData;
+
+
         }
     }, [data.imageData]);
 
@@ -63,6 +65,10 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
             dispatch(updateRotate(0));
         }
     }, [data.rotate]);
+
+    useEffect(() => {
+        canvasRef?.current && dispatch(getRef(canvasRef?.current.toDataURL('image/png')));
+    }, [canvasRef?.current]);
 
     useEffect(() => {
         if (!cursorData.mode.includes('bi-fonts')) dispatch(updateTextArea(false));
@@ -134,6 +140,7 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
             const newY = y - (selection.height / 2);
             ctx.putImageData(savedImageData, newX, newY); // Draw the dragged image
         }
+        dispatch(getRef(canvas.toDataURL()))
         dispatch(setPosition([x, y]));
     };
 
@@ -209,7 +216,7 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
                 setIsDragging(true);
             }
         }
-
+        dispatch(getRef(canvas.toDataURL()))
         dispatch(setPosition([x, y]));
     };
 
@@ -241,6 +248,7 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
         if (cursorData.submode.includes('bi-brush-calligraphy')) {
             setPrevPosition(null);
         }
+        dispatch(getRef(canvas.toDataURL()))
     };
 
     useEffect(() => {
@@ -261,6 +269,7 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
                 onMouseUp={handleMouseUp}
                 className={`position-absolute top-0 left-0 right-0 bottom-0 ${cursorData.mode}`}
             />
+
             <div
                 ref={cursorLayerRef}
                 style={{

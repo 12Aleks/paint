@@ -3,6 +3,7 @@ import type {PayloadAction} from "@reduxjs/toolkit";
 
 
 interface IPaintSlice{
+    refCanvas : string;
     imageData: string | null;
     imagePath: string | null;
     startSize: number;
@@ -14,6 +15,7 @@ interface IPaintSlice{
 }
 
 const initialState: IPaintSlice = {
+    refCanvas: '',
     imageData: null,
     imagePath: null,
     startSize: 800,
@@ -28,6 +30,9 @@ export const paintSlice = createSlice({
     name: 'paint',
     initialState,
     reducers: {
+        getRef: (state, action: PayloadAction<string>) => {
+            state.refCanvas = action.payload;
+        },
         createImageData: (state, action: PayloadAction<string>) => {
             state.imageData = action.payload;
         },
@@ -57,5 +62,5 @@ export const paintSlice = createSlice({
     }
 });
 
-export const {  updateTextInput, updateRotate, flipHorizontal, flipVertical,setPath, updateSizeInFooter, createImageData} = paintSlice.actions;
+export const {  getRef,updateTextInput, updateRotate, flipHorizontal, flipVertical,setPath, updateSizeInFooter, createImageData} = paintSlice.actions;
 export default paintSlice.reducer;
