@@ -18,43 +18,48 @@ $conic-gradient: conic-gradient(
 );
 
 
-.navbar-nav .nav-link {
-  color: #fff;
-}
-.dropend .dropdown-toggle {
-  margin-left: 1em;
-}
-.dropdown-item:hover {
-  color: #fff;
-}
-.dropdown .dropdown-menu {
-  display: none;
-}
-.dropdown:hover > .dropdown-menu,
-.dropend:hover > .dropdown-menu {
-  display: block;
-  margin-top: 0.125em;
-  margin-left: 0.125em;
-}
-@media screen and (min-width: 769px) {
-  .dropend:hover > .dropdown-menu {
-    position: absolute;
-    top: 0;
-    left: 100%;
-  }
-  .dropend .dropdown-toggle {
-    margin-left: 0.5em;
-  }
-}
-
 
 .navbar {
+  .dropend {
+    .dropdown-toggle {
+      margin-left: 1em;
+    }
+    .dropdown-menu {
+      display: none;
+    }
+  }
+
+  .dropdown:hover > .dropdown-menu,
+  .dropend:hover > .dropdown-menu {
+    display: block;
+    margin-top: 0;
+    margin-left: 0;
+  }
+  @media screen and (min-width: 769px) {
+    .dropend:hover > .dropdown-menu {
+      position: absolute;
+      padding: 0;
+      top: 0;
+      left: 100%;
+    }
+    .dropend .dropdown-toggle {
+      margin-left: 0.5em;
+    }
+  }
   .dropdown-toggle::after {
     display: none !important;
   }
   .dropdown-menu{
-    .dropdown-item, .nav-link.dropdown-toggle{
+    .dropdown-item, .nav-item.dropend{
       font-size: 14px;
+      cursor: pointer ;
+      &:hover, &:focus{
+        color: var(--bs-dropdown-link-hover-color);
+        background-color: var(--bs-dropdown-link-hover-bg);
+        i, a{
+          color: var(--bs-dropdown-link-hover-color);
+        }
+      }
     }
   }
 }
@@ -92,7 +97,7 @@ $conic-gradient: conic-gradient(
   ul.dropdown-menu {
     border-radius: 5px;
 
-    .dropdown-item {
+    li.dropdown-item {
       cursor: pointer;
       &:hover, &:focus {
         background: $button-active-gray;
@@ -133,7 +138,7 @@ $conic-gradient: conic-gradient(
       background: #212529;
 
       li {
-        .dropdown-item {
+        .dropdown-item, & > a.nav-item {
           &:hover, &:focus {
             background: $button-active-gray;
           }

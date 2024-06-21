@@ -1,6 +1,6 @@
 "use client"
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
-import {createImageData, getRef} from "@/lib/features/paintSlice";
+import {createImageData} from "@/lib/features/paintSlice";
 import {useState} from "react";
 
 
@@ -18,27 +18,43 @@ const Navbar = () => {
         if (ctx) {
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            // Можно добавить дополнительную отрисовку на холст
             const dataURL = canvas.toDataURL();
-// dispatch(getRef(dataURL))
             dispatch(createImageData(dataURL));
         }
     }
 
-    const download = () => {
-
-        console.log(refCanvas)
+    const download = (extension: string = 'png') => {
 
         if (refCanvas) {
             const link = document.createElement('a');
-
-            link.setAttribute('download', 'canvas.png');
+            const timestamp = new Date().toISOString().replace(/[:.-]/g, '');
+            link.setAttribute('download', `canvas_${timestamp}.${extension}`);
             link.setAttribute('href', refCanvas);
             link.click();
         } else {
             console.error('Canvas reference is not available');
         }
     }
+
+    const printCanvas = () => {
+        if (refCanvas) {
+            const printWindow = window.open('', '', 'width=800,height=800');
+            if (printWindow) {
+                printWindow.document.write('<html><head><title>Print Canvas</title></head><body>');
+                printWindow.document.write(`<img src="${refCanvas}" />`);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            } else {
+                console.error('Failed to open print window');
+            }
+        } else {
+            console.error('Canvas reference is not available');
+        }
+    }
+
+
+
 
 
     return (
@@ -52,20 +68,20 @@ const Navbar = () => {
                     <ul className="dropdown-menu bg-dark ">
                         <li onClick={createImage} className="dropdown-item"><i className="bi bi-file-earmark me-3"></i>New
                         </li>
-                        <li onClick={download} className="dropdown-item"><i className="bi bi-floppy me-3"></i>Save</li>
+                        <li onClick={() => download()} className="dropdown-item"><i className="bi bi-floppy me-3"></i>Save</li>
                         <li className="nav-item dropend">
-                            <a className="nav-link dropdown-toggle ps-2 pe-2 pt-1 pb-1" href="#" role="button" data-bs-toggle="dropdown"
+                            <a className="nav-link dropdown-toggle ps-2 pe-2 pt-1 pb-1" href="#" role="button"
+                               data-bs-toggle="dropdown"
                                aria-expanded="false">
-                                <i className="bi bi-floppy me-3"></i>Save As
+                                <i className="bi bi-floppy me-3"></i>Save As <i className="bi bi-chevron-right float-end pt-1 pb-1" style={{fontSize: '10px'}}></i>
                             </a>
                             <ul className="dropdown-menu bg-dark ">
-                                <li className="dropdown-item">PNG picture</li>
-                                <li className="dropdown-item">JPEG picture</li>
-                                <li className="dropdown-item">BMP picture</li>
+                                <li className="dropdown-item" onClick={() => download('png')}>PNG picture</li>
+                                <li className="dropdown-item" onClick={() => download('jpeg')}>JPEG picture</li>
+                                <li className="dropdown-item" onClick={() => download('bmp')}>BMP picture</li>
                             </ul>
                         </li>
-                        <li><a className="dropdown-item" href="#">Another action</a></li>
-                        <li><a className="dropdown-item" href="#">Something else here</a></li>
+                        <li onClick={printCanvas} className="dropdown-item"><i className="bi bi-printer me-3"></i>Print</li>
                     </ul>
                 </div>
                 <div className="dropdown">
