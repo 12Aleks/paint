@@ -7,6 +7,7 @@ import Canvas from "@/app/components/Canvas";
 import TextArea from "@/app/components/TextArea";
 import SizeModal from "@/app/components/modal/SizeModal";
 import TextModal from "@/app/components/modal/TextModal";
+import RulerModal from "@/app/components/modal/RulerModal";
 
 interface ImagePainterProps {}
 
@@ -26,6 +27,7 @@ const ImagePainter: FC<ImagePainterProps> = () => {
         <>
             <TextModal show={cursorData.mode.includes('bi-fonts')}/>
             <SizeModal show={cursorData.mode.includes('bi-pencil-fill') || cursorData.mode.includes('bi-eraser')}/>
+            <RulerModal/>
             <div className='position-relative overflow-hidden'>
                 <Canvas position={inputPosition}
                         changeTextPosition={setInputPosition}

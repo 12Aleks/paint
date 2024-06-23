@@ -1,8 +1,8 @@
 import React, {ChangeEvent, FC, useEffect, useState} from 'react';
 import {updateCursorSize} from "@/lib/features/cursorSlice";
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
-import {IShow} from "@/app/components/Modal";
 import Image from "next/image";
+import {IShow} from "@/app/components/modal/TextModal";
 
 
 const SizeModal: FC<IShow> = ({show}) => {

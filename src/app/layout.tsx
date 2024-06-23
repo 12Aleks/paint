@@ -30,7 +30,7 @@ export default function RootLayout({children}: Readonly<{ children: ReactNode}>)
                 <StoreProvider>
                     <Navbar/>
                     <ControlPanel/>
-                    {children}
+                       {children}
                     <Footer/>
                 </StoreProvider>
             </div>

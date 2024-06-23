@@ -1,13 +1,31 @@
 "use client"
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {createImageData} from "@/lib/features/paintSlice";
-import {useState} from "react";
+import {useEffect} from "react";
+import {changeStatusBar, changeViewRuler} from "@/lib/features/viewSlice";
+import {is} from "immutable";
 
 
 const Navbar = () => {
     const dispatch = useAppDispatch();
     const {refCanvas} = useAppSelector(state => state.data);
-    const [canvasLink, setCanvasLink] = useState('');
+    const {isStatusBar, isRulerModal} = useAppSelector(state => state.view);
+
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            console.log(event.key)
+            if (event.ctrlKey && event.key === 'r') {
+                event.preventDefault();
+                showRulers();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
 
     const createImage = () => {
         const canvas = document.createElement('canvas');
@@ -36,6 +54,8 @@ const Navbar = () => {
         }
     }
 
+
+
     const printCanvas = () => {
         if (refCanvas) {
             const printWindow = window.open('', '', 'width=800,height=800');
@@ -54,6 +74,15 @@ const Navbar = () => {
     }
 
 
+
+    const showRulers = () => {
+        console.log(isRulerModal)
+        dispatch(changeViewRuler(!isRulerModal));
+    };
+
+    const showStatusBar = () => {
+        dispatch(changeStatusBar(!isStatusBar));
+    }
 
 
 
@@ -101,9 +130,18 @@ const Navbar = () => {
                         View
                     </button>
                     <ul className="dropdown-menu bg-dark">
-                        <li><a className="dropdown-item" href="#">Action</a></li>
-                        <li><a className="dropdown-item" href="#">Another action</a></li>
-                        <li><a className="dropdown-item" href="#">Something else here</a></li>
+                        <li className="dropdown-item" onClick={showRulers}>
+                            <i className="bi bi-check-lg me-3"  style={{opacity: isRulerModal ? 1 : 0}}></i>
+                            Rulers
+                        </li>
+                        <li className="dropdown-item">
+                            <i className="bi bi-check-lg me-3"   style={{opacity: isStatusBar ? 1 : 0}}></i>
+                            Another action
+                        </li>
+                        <li className="dropdown-item" onClick={showStatusBar}>
+                            <i className="bi bi-check-lg me-3" style={{opacity: isStatusBar ? 1 : 0}}></i>
+                            Status bar
+                        </li>
                     </ul>
                 </div>
             </div>
