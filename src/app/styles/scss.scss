@@ -309,7 +309,8 @@ $conic-gradient: conic-gradient(
 main {
   height: calc(100vh - 248px);
   padding: 15px;
-  overflow-x: auto;
+  //overflow-x: auto;
+  overflow: hidden;
   display: grid;
   place-items: center;
 
@@ -453,6 +454,9 @@ footer {
 }
 .modal_overlay {
   position: absolute;
+  background: rgba(82, 82, 82, 1);
+  border-radius: 5px;
+  z-index: 500;
   top: 2px;
   width: 800px;
   margin: 0 auto;
@@ -626,6 +630,10 @@ textarea.textMode, .textMode:focus {
   font-size:0;
   margin:0;
   padding:0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
   label {
     font-size:9px;
     padding-top:2px;
@@ -633,4 +641,53 @@ textarea.textMode, .textMode:focus {
     width:100px;
     text-indent:3px;
   }
+
+  .vertical_ruler {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 30px; /* Adjust width as needed */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .horizontal_ruler label,
+  .vertical_ruler label {
+    margin: 0;
+    padding: 0 5px; /* Adjust padding as needed */
+  }
+}
+.ruler_wrapper {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 1000;
+}
+
+.horizontal_ruler {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px; /* Adjust height as needed */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.vertical_ruler {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 30px; /* Adjust width as needed */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.horizontal_ruler label,
+.vertical_ruler label {
+  margin: 0;
+  padding: 0 5px; /* Adjust padding as needed */
 }
