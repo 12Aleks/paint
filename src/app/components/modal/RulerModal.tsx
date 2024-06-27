@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import  {FC, useState, useEffect } from 'react';
 import { useAppSelector } from "@/lib/hooks";
 
-const RulerModal: React.FC = () => {
+const RulerModal: FC = () => {
     const { isRulerModal } = useAppSelector(state => state.view);
     const [windowDimensions, setWindowDimensions] = useState<{ width: number, height: number }>({
         width: window.innerWidth,
@@ -23,16 +23,16 @@ const RulerModal: React.FC = () => {
     }, []);
 
     const generateLabels = (size: number): number[] => {
-        const step = 100;
-        const labels = [];
-        for (let i = 0; i <= size; i += step) {
+        const step:number = 20;
+        const labels: number[] = [];
+        for (let i: number = 0; i <= size; i += step) {
             labels.push(i);
         }
         return labels;
     };
 
-    const horizontalLabels = generateLabels(windowDimensions.width);
-    const verticalLabels = generateLabels(windowDimensions.height);
+    const horizontalLabels: number[] = generateLabels(windowDimensions.width);
+    const verticalLabels: number[] = generateLabels(windowDimensions.height);
 
     return (
         <div style={{ display: isRulerModal ? "block" : "none" }}>

@@ -560,80 +560,86 @@ textarea.textMode, .textMode:focus {
 
 .ruler_wrapper{
   background-color: #ffffff;
-  background-image:
-          linear-gradient(90deg,
-                  rgba(73, 73, 73, 0.5) 0,
-                  rgba(73, 73, 73, 0.5) 2%,
-                  transparent 2%
-          ),
-          linear-gradient(180deg,
-                  #ffffff 50%,
-                  transparent 50%
-          ),
-          linear-gradient(90deg,
-                  transparent 50%,
-                  rgba(73, 73, 73, 0.5) 50%,
-                  rgba(73, 73, 73, 0.5) 52%,
-                  transparent 52%
-          ),
-          linear-gradient(180deg,
-                  #ffffff 70%,
-                  transparent 70%
-          ),
-          linear-gradient(90deg,
-                  transparent 10%,
-                  rgba(73, 73, 73, 0.4) 10%,
-                  rgba(73, 73, 73, 0.4) 12%,
-                  transparent 12%,
+  &.horizontal_ruler, &.vertical_ruler{
+    background-color: #ffffff;
+    min-height: 20px;
+    white-space:nowrap;
+    font-size:0;
+    margin:0;
+    padding:0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+  }
+  &.horizontal_ruler{
+    margin-left: 20px;
+    background-image:
+            linear-gradient(90deg,
+                    rgba(73, 73, 73, 0.5) 0,
+                    rgba(73, 73, 73, 0.5) 2%,
+                    transparent 2%
+            ),
+            linear-gradient(180deg,
+                    #ffffff 50%,
+                    transparent 50%
+            ),
+            linear-gradient(90deg,
+                    transparent 50%,
+                    rgba(73, 73, 73, 0.5) 50%,
+                    rgba(73, 73, 73, 0.5) 52%,
+                    transparent 52%
+            ),
+            linear-gradient(180deg,
+                    #ffffff 70%,
+                    transparent 70%
+            ),
+            linear-gradient(90deg,
+                    transparent 10%,
+                    rgba(73, 73, 73, 0.4) 10%,
+                    rgba(73, 73, 73, 0.4) 12%,
+                    transparent 12%,
 
-                  transparent 20%,
-                  rgba(73, 73, 73, 0.4) 20%,
-                  rgba(73, 73, 73, 0.4) 22%,
-                  transparent 22%,
+                    transparent 20%,
+                    rgba(73, 73, 73, 0.4) 20%,
+                    rgba(73, 73, 73, 0.4) 22%,
+                    transparent 22%,
 
-                  transparent 30%,
-                  rgba(73, 73, 73, 0.4) 30%,
-                  rgba(73, 73, 73, 0.4) 32%,
-                  transparent 32%,
+                    transparent 30%,
+                    rgba(73, 73, 73, 0.4) 30%,
+                    rgba(73, 73, 73, 0.4) 32%,
+                    transparent 32%,
 
-                  transparent 40%,
-                  rgba(73, 73, 73, 0.4) 40%,
-                  rgba(73, 73, 73, 0.4) 42%,
-                  transparent 42%,
+                    transparent 40%,
+                    rgba(73, 73, 73, 0.4) 40%,
+                    rgba(73, 73, 73, 0.4) 42%,
+                    transparent 42%,
 
-                  transparent 60%,
-                  rgba(73, 73, 73, 0.4) 60%,
-                  rgba(73, 73, 73, 0.4) 62%,
-                  transparent 62%,
+                    transparent 60%,
+                    rgba(73, 73, 73, 0.4) 60%,
+                    rgba(73, 73, 73, 0.4) 62%,
+                    transparent 62%,
 
-                  transparent 70%,
-                  rgba(73, 73, 73, 0.4) 70%,
-                  rgba(73, 73, 73, 0.4) 72%,
-                  transparent 72%,
+                    transparent 70%,
+                    rgba(73, 73, 73, 0.4) 70%,
+                    rgba(73, 73, 73, 0.4) 72%,
+                    transparent 72%,
 
-                  transparent 80%,
-                  rgba(73, 73, 73, 0.4) 80%,
-                  rgba(73, 73, 73, 0.4) 82%,
-                  transparent 82%,
+                    transparent 80%,
+                    rgba(73, 73, 73, 0.4) 80%,
+                    rgba(73, 73, 73, 0.4) 82%,
+                    transparent 82%,
 
-                  transparent 90%,
-                  rgba(73, 73, 73, 0.4) 90%,
-                  rgba(73, 73, 73, 0.4) 92%,
-                  transparent 92%
-          );
-  background-size: 50px 20px;
-  background-repeat: repeat-x;
-  min-height: 20px;
+                    transparent 90%,
+                    rgba(73, 73, 73, 0.4) 90%,
+                    rgba(73, 73, 73, 0.4) 92%,
+                    transparent 92%
+            );
+    background-size: 50px 20px;
+    background-repeat: repeat-x;
 
-  /* only needed for labels */
-  white-space:nowrap;
-  font-size:0;
-  margin:0;
-  padding:0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 100;
+  }
+
   label {
     font-size:9px;
     padding-top:2px;
@@ -642,14 +648,17 @@ textarea.textMode, .textMode:focus {
     text-indent:3px;
   }
 
-  .vertical_ruler {
+  &.vertical_ruler {
     top: 0;
     left: 0;
-    bottom: 0;
-    width: 30px; /* Adjust width as needed */
+    width: 20px;
+    height: 100%;
+    margin-top: 20px;
+    background-image: linear-gradient(180deg, rgba(73, 73, 73, 0.5) 0, rgba(73, 73, 73, 0.5) 2%, transparent 2%), linear-gradient(90deg, #ffffff 50%, transparent 50%), linear-gradient(180deg, transparent 50%, rgba(73, 73, 73, 0.5) 50%, rgba(73, 73, 73, 0.5) 52%, transparent 52%), linear-gradient(90deg, #ffffff 70%, transparent 70%), linear-gradient(180deg, transparent 10%, rgba(73, 73, 73, 0.4) 10%, rgba(73, 73, 73, 0.4) 12%, transparent 12%, transparent 20%, rgba(73, 73, 73, 0.4) 20%, rgba(73, 73, 73, 0.4) 22%, transparent 22%, transparent 30%, rgba(73, 73, 73, 0.4) 30%, rgba(73, 73, 73, 0.4) 32%, transparent 32%, transparent 40%, rgba(73, 73, 73, 0.4) 40%, rgba(73, 73, 73, 0.4) 42%, transparent 42%, transparent 60%, rgba(73, 73, 73, 0.4) 60%, rgba(73, 73, 73, 0.4) 62%, transparent 62%, transparent 70%, rgba(73, 73, 73, 0.4) 70%, rgba(73, 73, 73, 0.4) 72%, transparent 72%, transparent 80%, rgba(73, 73, 73, 0.4) 80%, rgba(73, 73, 73, 0.4) 82%, transparent 82%, transparent 90%, rgba(73, 73, 73, 0.4) 90%, rgba(73, 73, 73, 0.4) 92%, transparent 92%);
+    background-size: 20px 50px;
+    background-repeat: repeat-y;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
   }
 
@@ -658,21 +667,6 @@ textarea.textMode, .textMode:focus {
     margin: 0;
     padding: 0 5px; /* Adjust padding as needed */
   }
-}
-.ruler_wrapper {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.9);
-  z-index: 1000;
-}
-
-.horizontal_ruler {
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 30px; /* Adjust height as needed */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .vertical_ruler {
