@@ -302,9 +302,6 @@ $conic-gradient: conic-gradient(
 }
 
 
-.footer, .size-modal{
-
-}
 
 main {
   height: calc(100vh - 248px);
@@ -454,7 +451,6 @@ footer {
 }
 .modal_overlay {
   position: absolute;
-  background: rgba(82, 82, 82, 1);
   border-radius: 5px;
   z-index: 500;
   top: 2px;
@@ -493,17 +489,19 @@ textarea.textMode, .textMode:focus {
   background-color: transparent;
 
 }
-
+.size-modal, .modal_overlay{
+  background: rgba(82, 82, 82, 1);
+}
 .size-modal {
   position: fixed;
   top: calc(50vh + 23vh);
   left: 15px;
   transform: rotate(-90deg);
   transform-origin: left top 0;
-  background: rgba(128, 128, 128, 0.4);
   padding: 7px 10px 10px 10px;
   border-radius: 8px;
   height: 43px;
+  z-index: 200;
 }
 
 .modal_wrapper {
@@ -560,6 +558,12 @@ textarea.textMode, .textMode:focus {
 
 .ruler_wrapper{
   background-color: #ffffff;
+  label {
+    font-size: 8px;
+    padding-top:2px;
+    display:inline-block;
+    text-indent:3px;
+  }
   &.horizontal_ruler, &.vertical_ruler{
     background-color: #ffffff;
     min-height: 20px;
@@ -637,16 +641,11 @@ textarea.textMode, .textMode:focus {
             );
     background-size: 50px 20px;
     background-repeat: repeat-x;
-
+    label {
+      width:50px;
+    }
   }
 
-  label {
-    font-size:9px;
-    padding-top:2px;
-    display:inline-block;
-    width:100px;
-    text-indent:3px;
-  }
 
   &.vertical_ruler {
     top: 0;
@@ -660,28 +659,9 @@ textarea.textMode, .textMode:focus {
     display: flex;
     flex-direction: column;
     align-items: center;
+    label {
+      min-height: 50px;
+      padding: 5px 7px 0 0;
+    }
   }
-
-  .horizontal_ruler label,
-  .vertical_ruler label {
-    margin: 0;
-    padding: 0 5px; /* Adjust padding as needed */
-  }
-}
-
-.vertical_ruler {
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 30px; /* Adjust width as needed */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.horizontal_ruler label,
-.vertical_ruler label {
-  margin: 0;
-  padding: 0 5px; /* Adjust padding as needed */
 }

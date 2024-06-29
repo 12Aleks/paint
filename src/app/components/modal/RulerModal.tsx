@@ -1,11 +1,11 @@
-import  {FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useAppSelector } from "@/lib/hooks";
 
 const RulerModal: FC = () => {
     const { isRulerModal } = useAppSelector(state => state.view);
     const [windowDimensions, setWindowDimensions] = useState<{ width: number, height: number }>({
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: 0,
+        height: 0,
     });
 
     useEffect(() => {
@@ -16,14 +16,22 @@ const RulerModal: FC = () => {
             });
         };
 
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
+        if (typeof window !== 'undefined') {
+            // Set initial dimensions
+            setWindowDimensions({
+                width: window.innerWidth,
+                height: window.innerHeight,
+            });
+
+            window.addEventListener('resize', handleResize);
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            };
+        }
     }, []);
 
     const generateLabels = (size: number): number[] => {
-        const step:number = 20;
+        const step: number = 10;
         const labels: number[] = [];
         for (let i: number = 0; i <= size; i += step) {
             labels.push(i);
