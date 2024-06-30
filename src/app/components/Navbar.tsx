@@ -120,7 +120,7 @@ const Navbar = () => {
                     </button>
                     <ul className="dropdown-menu bg-dark">
                         <li><a className="dropdown-item" href="#">Action</a></li>
-                        <li><a className="dropdown-item" href="#">Another action</a></li>
+                        <li><a className="dropdown-item" href="#">GridLines</a></li>
                         <li><a className="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </div>
@@ -132,11 +132,11 @@ const Navbar = () => {
                     <ul className="dropdown-menu bg-dark">
                         <li className="dropdown-item" onClick={showRulers}>
                             <i className="bi bi-check-lg me-3"  style={{opacity: isRulerModal ? 1 : 0}}></i>
-                            Rulers
+                            Rulers <span>Ctrl+R</span>
                         </li>
                         <li className="dropdown-item">
-                            <i className="bi bi-check-lg me-3"   style={{opacity: isStatusBar ? 1 : 0}}></i>
-                            Another action
+                            <i className="bi bi-check-lg me-3" style={{opacity: isStatusBar ? 1 : 0}}></i>
+                            Gridlines <span>Ctrl+G</span>
                         </li>
                         <li className="dropdown-item" onClick={showStatusBar}>
                             <i className="bi bi-check-lg me-3" style={{opacity: isStatusBar ? 1 : 0}}></i>
