@@ -3,11 +3,13 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 export interface IViewSlice {
     isStatusBar: boolean;
     isRulerModal: boolean;
+    isGridLine: boolean;
 }
 
 const initialState: IViewSlice = {
     isStatusBar: true,
-    isRulerModal: false
+    isRulerModal: false,
+    isGridLine: false
 }
 
 export const viewSlice = createSlice({
@@ -19,9 +21,12 @@ export const viewSlice = createSlice({
         },
         changeViewRuler: (state, action:PayloadAction<boolean>) => {
             state.isRulerModal = action.payload
+        },
+        changeViewGridLine: (state, action:PayloadAction<boolean>) => {
+            state.isGridLine = action.payload
         }
     }
 })
 
-export const {changeStatusBar, changeViewRuler} = viewSlice.actions;
+export const {changeStatusBar,changeViewGridLine, changeViewRuler} = viewSlice.actions;
 export default viewSlice.reducer;

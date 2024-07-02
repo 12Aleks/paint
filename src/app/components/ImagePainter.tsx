@@ -8,6 +8,7 @@ import TextArea from "@/app/components/TextArea";
 import SizeModal from "@/app/components/modal/SizeModal";
 import TextModal from "@/app/components/modal/TextModal";
 import RulerModal from "@/app/components/modal/RulerModal";
+import GridLines from "@/app/components/GridLines";
 
 interface ImagePainterProps {}
 

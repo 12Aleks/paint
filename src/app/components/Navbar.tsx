@@ -2,22 +2,24 @@
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {createImageData} from "@/lib/features/paintSlice";
 import {useEffect} from "react";
-import {changeStatusBar, changeViewRuler} from "@/lib/features/viewSlice";
+import {changeStatusBar, changeViewGridLine, changeViewRuler} from "@/lib/features/viewSlice";
 import {is} from "immutable";
 
 
 const Navbar = () => {
     const dispatch = useAppDispatch();
     const {refCanvas} = useAppSelector(state => state.data);
-    const {isStatusBar, isRulerModal} = useAppSelector(state => state.view);
+    const {isStatusBar, isRulerModal, isGridLine} = useAppSelector(state => state.view);
 
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-            console.log(event.key)
             if (event.ctrlKey && event.key === 'r') {
                 event.preventDefault();
                 showRulers();
+            } else if(event.ctrlKey && event.key === 'g'){
+                event.preventDefault();
+                showGridLine();
             }
         };
         window.addEventListener('keydown', handleKeyDown);
@@ -55,7 +57,6 @@ const Navbar = () => {
     }
 
 
-
     const printCanvas = () => {
         if (refCanvas) {
             const printWindow = window.open('', '', 'width=800,height=800');
@@ -84,7 +85,9 @@ const Navbar = () => {
         dispatch(changeStatusBar(!isStatusBar));
     }
 
-
+    const showGridLine = () => {
+        dispatch(changeViewGridLine(!isGridLine));
+    }
 
     return (
         <div className="p-2 border-0 navbar">
@@ -134,8 +137,8 @@ const Navbar = () => {
                             <i className="bi bi-check-lg me-3"  style={{opacity: isRulerModal ? 1 : 0}}></i>
                             Rulers <span>Ctrl+R</span>
                         </li>
-                        <li className="dropdown-item">
-                            <i className="bi bi-check-lg me-3" style={{opacity: isStatusBar ? 1 : 0}}></i>
+                        <li className="dropdown-item" onClick={showGridLine}>
+                            <i className="bi bi-check-lg me-3" style={{opacity: isGridLine ? 1 : 0}}></i>
                             Gridlines <span>Ctrl+G</span>
                         </li>
                         <li className="dropdown-item" onClick={showStatusBar}>

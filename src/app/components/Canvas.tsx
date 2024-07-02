@@ -12,6 +12,7 @@ import { renderText } from "@/mods/text";
 import { searchMode } from "@/mods/search";
 import { drawWithBrushAngle } from "@/mods/submode/calligraphy";
 import {drawWithOil} from "@/mods/submode/oil";
+import GridLines from "@/app/components/GridLines";
 
 interface ICanvas {
     position: { x: number; y: number };
@@ -269,7 +270,7 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
                 onMouseUp={handleMouseUp}
                 className={`position-absolute top-0 left-0 right-0 bottom-0 ${cursorData.mode}`}
             />
-
+            <GridLines width={data.sizeWidth} height={data.sizeHeight} cellSize={20} />
             <div
                 ref={cursorLayerRef}
                 style={{
