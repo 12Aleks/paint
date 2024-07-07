@@ -270,7 +270,7 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
                 onMouseUp={handleMouseUp}
                 className={`position-absolute top-0 left-0 right-0 bottom-0 ${cursorData.mode}`}
             />
-            <GridLines width={data.sizeWidth} height={data.sizeHeight} cellSize={20} />
+            <GridLines width={data.sizeWidth} height={data.sizeHeight}  />
             <div
                 ref={cursorLayerRef}
                 style={{

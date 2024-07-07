@@ -34,6 +34,7 @@ $conic-gradient: conic-gradient(
     display: block;
     margin-top: 0;
     margin-left: 0;
+    width: max-content;
   }
   @media screen and (min-width: 769px) {
     .dropend:hover > .dropdown-menu {
@@ -51,14 +52,19 @@ $conic-gradient: conic-gradient(
   }
   .dropdown-menu{
     .dropdown-item, .nav-item.dropend{
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer ;
+      letter-spacing: 1px;
+      span{
+        color: #9b9b9b;
+      }
       &:hover, &:focus{
         color: var(--bs-dropdown-link-hover-color);
         background-color: var(--bs-dropdown-link-hover-bg);
         i, a, span{
           color: var(--bs-dropdown-link-hover-color);
         }
+
       }
     }
   }
@@ -500,16 +506,20 @@ textarea.textMode, .textMode:focus {
   transform-origin: left top 0;
   padding: 7px 10px 10px 10px;
   border-radius: 8px;
-  height: 43px;
+  height: 40px;
   z-index: 200;
+  &.gridLine{
+    left: 97%;
+  }
 }
 
 .modal_wrapper {
   position: relative;
-
-  img {
+  display: flex;
+  align-items: center;
+  img, i {
     transform: rotate(-90deg);
-    padding: 0 4px 0 2px;
+    padding: 0 4px 0 4px;
     opacity: 0.5;
   }
 

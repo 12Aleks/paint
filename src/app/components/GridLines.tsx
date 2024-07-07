@@ -5,11 +5,10 @@ import {useAppSelector} from "@/lib/hooks";
 interface IGridLines {
     width: number;
     height: number;
-    cellSize: number;
 }
 
-const GridLines: FC<IGridLines> = ({ width, height, cellSize }) => {
-    const {isGridLine} = useAppSelector(state => state.view)
+const GridLines: FC<IGridLines> = ({ width, height}) => {
+    const {isGridLine, gridLineSize} = useAppSelector(state => state.view)
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
 
@@ -24,7 +23,7 @@ const GridLines: FC<IGridLines> = ({ width, height, cellSize }) => {
         ctx.lineWidth = 0.5;
 
         // Draw vertical lines
-        for (let x = 0; x <= width; x += cellSize) {
+        for (let x = 0; x <= width; x += gridLineSize) {
             ctx.beginPath();
             ctx.moveTo(x, 0);
             ctx.lineTo(x, height);
@@ -32,13 +31,13 @@ const GridLines: FC<IGridLines> = ({ width, height, cellSize }) => {
         }
 
         // Draw horizontal lines
-        for (let y = 0; y <= height; y += cellSize) {
+        for (let y = 0; y <= height; y += gridLineSize) {
             ctx.beginPath();
             ctx.moveTo(0, y);
             ctx.lineTo(width, y);
             ctx.stroke();
         }
-    }, [width, height, cellSize]);
+    }, [width, height, gridLineSize]);
 
     return (
         <canvas

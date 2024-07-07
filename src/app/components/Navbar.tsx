@@ -3,7 +3,7 @@ import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {createImageData} from "@/lib/features/paintSlice";
 import {useEffect} from "react";
 import {changeStatusBar, changeViewGridLine, changeViewRuler} from "@/lib/features/viewSlice";
-import {is} from "immutable";
+
 
 
 const Navbar = () => {
@@ -14,20 +14,18 @@ const Navbar = () => {
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.ctrlKey && event.key === 'r') {
-                event.preventDefault();
-                showRulers();
-            } else if(event.ctrlKey && event.key === 'g'){
-                event.preventDefault();
-                showGridLine();
-            }
+             event.preventDefault();
+             (event.ctrlKey && event.key === 'r') && showRulers();
+             (event.ctrlKey && event.key === 'g') && showGridLine();
+             (event.ctrlKey && event.key === 'n') && createImage();
+             (event.ctrlKey && event.key === 's') && download();
         };
         window.addEventListener('keydown', handleKeyDown);
 
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, []);
+    }, [isStatusBar, isRulerModal, isGridLine]);
 
     const createImage = () => {
         const canvas = document.createElement('canvas');
@@ -99,8 +97,10 @@ const Navbar = () => {
                     </button>
                     <ul className="dropdown-menu bg-dark ">
                         <li onClick={createImage} className="dropdown-item"><i className="bi bi-file-earmark me-3"></i>New
+                            <span className="float-end d-inline ps-3">Ctrl+N</span>
                         </li>
-                        <li onClick={() => download()} className="dropdown-item"><i className="bi bi-floppy me-3"></i>Save</li>
+                        <li onClick={() => download()} className="dropdown-item"><i className="bi bi-floppy me-3"></i>Save
+                            <span className="float-end d-inline ps-3">Ctrl+S</span></li>
                         <li className="nav-item dropend">
                             <a className="nav-link dropdown-toggle ps-2 pe-2 pt-1 pb-1" href="#" role="button"
                                data-bs-toggle="dropdown"
@@ -135,11 +135,11 @@ const Navbar = () => {
                     <ul className="dropdown-menu bg-dark">
                         <li className="dropdown-item" onClick={showRulers}>
                             <i className="bi bi-check-lg me-3"  style={{opacity: isRulerModal ? 1 : 0}}></i>
-                            Rulers <span>Ctrl+R</span>
+                            Rulers <span className="float-end d-inline ps-3">Ctrl+R</span>
                         </li>
                         <li className="dropdown-item" onClick={showGridLine}>
                             <i className="bi bi-check-lg me-3" style={{opacity: isGridLine ? 1 : 0}}></i>
-                            Gridlines <span>Ctrl+G</span>
+                            Gridlines <span className="float-end d-inline ps-3">Ctrl+G</span>
                         </li>
                         <li className="dropdown-item" onClick={showStatusBar}>
                             <i className="bi bi-check-lg me-3" style={{opacity: isStatusBar ? 1 : 0}}></i>
