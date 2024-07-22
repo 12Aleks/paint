@@ -196,6 +196,8 @@ const Canvas: FC<ICanvas> = ({ position, changeTextPosition }) => {
         } else if (cursorData.mode.includes('bi-zoom-in')) {
             zoomPlus(ctx, canvas);
         } else if (cursorData.mode.includes('bi-fonts')) {
+            console.log(cursorData.mode.includes('bi-fonts'))
+            console.log(data.textInput)
             renderText(cursorData, ctx, data.textInput, position.x, position.y);
             dispatch(updateTextInput(''));
             dispatch(updateTextArea(!cursorData.textArea));

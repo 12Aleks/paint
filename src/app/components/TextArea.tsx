@@ -17,6 +17,7 @@ const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition,  
     const dispatch = useAppDispatch();
 
     const handleTextInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => { // Change to HTMLTextAreaElement
+        console.log(event)
         dispatch(updateTextInput(event.target.value));
     };
 

@@ -521,6 +521,9 @@ textarea.textMode, .textMode:focus {
     transform: rotate(-90deg);
     padding: 0 4px 0 4px;
     opacity: 0.5;
+    &.rotate{
+      transform: rotate(0deg);
+    }
   }
 
   .custom-vertical-range {

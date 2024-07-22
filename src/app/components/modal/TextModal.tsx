@@ -117,7 +117,7 @@ const TextModal: FC<IShow> = ({show}) => {
                             {
                                 textDecorations.map(icon =>
                                     <div key={icon} className={active.includes(icon)? 'active': ''}>
-                                        <i className={`bi bi-type-${icon}`}
+                                        <i className={`bi bi-type-${icon} rotate`}
                                            onClick={() => changeTextDecoration(icon)}/>
                                     </div>
                                 )
@@ -125,13 +125,13 @@ const TextModal: FC<IShow> = ({show}) => {
                         </div>
                         <div className="w-25 d-flex justify-content-between border-start border-2-secondary ps-2 pe-2 wrapper">
                             <div className={activePosition.includes('left') ? 'active' : ''}>
-                                <i className="bi bi-filter-left" onClick={() => changeTextPosition('left')}></i>
+                                <i className="bi bi-filter-left rotate" onClick={() => changeTextPosition('left')}></i>
                             </div>
                             <div className={activePosition.includes('center') ? 'active' : ''}>
-                                <i className="bi bi-filter" onClick={() => changeTextPosition('center')}></i>
+                                <i className="bi bi-filter rotate" onClick={() => changeTextPosition('center')}></i>
                             </div>
                             <div className={activePosition.includes('right') ? 'active' : ''}>
-                                <i className="bi bi-filter-right" onClick={() => changeTextPosition('right')}></i>
+                                <i className="bi bi-filter-right rotate" onClick={() => changeTextPosition('right')}></i>
                             </div>
                         </div>
                         <div className="w-25 d-flex justify-content-between border-start border-2-secondary ps-2 pe-2">

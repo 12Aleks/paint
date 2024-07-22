@@ -16,7 +16,7 @@ export const renderText = (cursorData: ICursorSlice, ctx: CanvasRenderingContext
     }
 
     ctx.fillText(textInput, Math.round(adjustedX), Math.round(y) + cursorData.fontSize);
-
+     console.log(textInput)
     if (cursorData.textDecoration.includes('underline') || cursorData.textStrikethrough.includes('line-through')) {
         const textMetrics = ctx.measureText(textInput);
         const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent;
