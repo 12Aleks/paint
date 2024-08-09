@@ -19,7 +19,7 @@ export interface ICursorSlice {
     submode: SubMode,
     fontFamily: string,
     fontSize: number,
-    fonStyle: string,
+    fontStyle: string,
     fontWeight: string,
     textDecoration: string,
     textArea: boolean,
@@ -40,7 +40,7 @@ const initialState: ICursorSlice = {
     submode: 'bi-brush-fill',
     fontFamily: 'Arial',
     fontSize: 11,
-    fonStyle: 'normal',
+    fontStyle: 'normal',
     fontWeight: 'normal',
     textDecoration: '',
     textStrikethrough: '',
@@ -88,7 +88,7 @@ export const cursorSlice = createSlice({
             state.fontWeight = action.payload
         },
         updateFonStyle: (state, action: PayloadAction<string>) => {
-            state.fonStyle = action.payload
+            state.fontStyle = action.payload
         },
         updateTextArea: (state, action: PayloadAction<boolean>) => {
             state.textArea = action.payload

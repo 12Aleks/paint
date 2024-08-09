@@ -125,7 +125,7 @@ const TextModal: FC<IShow> = ({show}) => {
                         </div>
                         <div className="w-25 d-flex justify-content-between border-start border-2-secondary ps-2 pe-2 wrapper">
                             <div className={activePosition.includes('left') ? 'active' : ''}>
-                                <i className="bi bi-filter-left rotate" onClick={() => changeTextPosition('left')}></i>
+                                <i className="bi bi-filter-left rotate text-white" onClick={() => changeTextPosition('left')}></i>
                             </div>
                             <div className={activePosition.includes('center') ? 'active' : ''}>
                                 <i className="bi bi-filter rotate" onClick={() => changeTextPosition('center')}></i>

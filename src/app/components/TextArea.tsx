@@ -1,29 +1,31 @@
-import {Dispatch, SetStateAction, FC, ChangeEvent, DragEvent, useEffect, useRef} from 'react'
+import {
+    Dispatch, SetStateAction, FC, ChangeEvent, useEffect, useRef
+} from 'react';
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { updateTextInput } from "@/lib/features/paintSlice";
-import {updateTextAreaSize} from "@/lib/features/cursorSlice";
+import { updateTextAreaSize } from "@/lib/features/cursorSlice";
 
 interface DragDropInputProps {
     isDragging: boolean;
     position: { x: number; y: number };
     setPosition: Dispatch<SetStateAction<{ x: number; y: number }>>;
-    show: boolean
+    show: boolean;
 }
 
-const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition,  show }) => {
+const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition, show }) => {
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const data = useAppSelector(state => state.data);
     const cursorData = useAppSelector(state => state.cursorData);
     const dispatch = useAppDispatch();
 
-    const handleTextInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => { // Change to HTMLTextAreaElement
+    const handleTextInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         console.log(event)
         dispatch(updateTextInput(event.target.value));
     };
 
     useEffect(() => {
-        !show && setPosition({ x: 0, y: 0 });
-    }, [show])
+        if (!show) setPosition({ x: 0, y: 0 });
+    }, [show, setPosition]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -41,7 +43,7 @@ const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition,  
         return () => {
             resizeObserver.disconnect();
         };
-    }, [textAreaRef.current]);
+    }, [dispatch]);
 
     return (
         <textarea
@@ -50,19 +52,20 @@ const TextArea: FC<DragDropInputProps> = ({ isDragging, position, setPosition,  
             onChange={handleTextInputChange}
             draggable={!isDragging}
             className={`textMode ${show ? 'show' : ''}`}
-            style={{ maxHeight: data.sizeHeight,
-                      maxWidth: data.sizeWidth,
-                      left: position.x,
-                      top: position.y,
-                      fontSize: cursorData.fontSize,
-                      fontFamily: cursorData.fontFamily,
-                      fontWeight: cursorData.fontWeight,
-                      textDecoration: `${cursorData.textDecoration} ${cursorData.textStrikethrough}`,
-                      fontStyle: cursorData.fonStyle,
-                      lineHeight: cursorData.fontSize + 'px',
-                      color: cursorData.colorFirst,
-                      textAlign: cursorData.textPosition
-           }}
+            style={{
+                maxHeight: data.sizeHeight,
+                maxWidth: data.sizeWidth,
+                left: position.x,
+                top: position.y,
+                fontSize: cursorData.fontSize,
+                fontFamily: cursorData.fontFamily,
+                fontWeight: cursorData.fontWeight,
+                textDecoration: `${cursorData.textDecoration} ${cursorData.textStrikethrough}`,
+                fontStyle: cursorData?.fontStyle,
+                lineHeight: `${cursorData.fontSize}px`,
+                color: cursorData.colorFirst,
+                textAlign: cursorData.textPosition,
+            }}
         />
     );
 };

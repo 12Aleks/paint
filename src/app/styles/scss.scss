@@ -436,9 +436,7 @@ footer {
   ::-webkit-scrollbar-thumb:hover {
     background: #555; /* Darker color when hovered */
   }
-
   //end scroll style
-
 
   h1, h2, h3, h4, h5, h6, p, a, span, li, i {
     color: $text-color;
@@ -446,7 +444,6 @@ footer {
 
   .control_panel, .modal_block {
     background: rgba(gray, .4);
-
   }
 }
 .modal_overlay, .textMode, .size-modal {
@@ -475,6 +472,7 @@ footer {
       .modal_body {
         i{
           font-size: 22px;
+          opacity: 1;
         }
       }
     }

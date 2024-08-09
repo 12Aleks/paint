@@ -14,11 +14,24 @@ const Navbar = () => {
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-             event.preventDefault();
-             (event.ctrlKey && event.key === 'r') && showRulers();
-             (event.ctrlKey && event.key === 'g') && showGridLine();
-             (event.ctrlKey && event.key === 'n') && createImage();
-             (event.ctrlKey && event.key === 's') && download();
+             // event.preventDefault();
+            if (event.ctrlKey && event.key === 'r') {
+                event.preventDefault();
+                event.stopPropagation();
+                showRulers();
+            } else if (event.ctrlKey && event.key === 'g') {
+                event.preventDefault();
+                event.stopPropagation();
+                showGridLine();
+            } else if (event.ctrlKey && event.key === 'n') {
+                event.preventDefault();
+                event.stopPropagation();
+                createImage();
+            } else if (event.ctrlKey && event.key === 's') {
+                event.preventDefault();
+                event.stopPropagation();
+                download();
+            }
         };
         window.addEventListener('keydown', handleKeyDown);
 
