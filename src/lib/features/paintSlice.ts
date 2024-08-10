@@ -1,5 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import type {PayloadAction} from "@reduxjs/toolkit";
+import {number} from "prop-types";
 
 
 interface IPaintSlice{
@@ -36,9 +37,15 @@ export const paintSlice = createSlice({
         createImageData: (state, action: PayloadAction<string>) => {
             state.imageData = action.payload;
         },
-        updateSizeInFooter:(state, action: PayloadAction<number>) => {
-            state.sizeWidth = action.payload;
-            state.sizeHeight = action.payload;
+        updateSizeInFooter:(state, action: PayloadAction<number[] | number>) => {
+            if(Array.isArray(action.payload)){
+                state.sizeWidth = action.payload[0];
+                state.sizeHeight = action.payload[1];
+            }else{
+                state.sizeWidth = action.payload;
+                state.sizeHeight = action.payload;
+            }
+
         },
         setPath: (state, action: PayloadAction<string>) => {
             state.imagePath = action.payload;

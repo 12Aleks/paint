@@ -1,7 +1,7 @@
 "use client"
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
-import {createImageData} from "@/lib/features/paintSlice";
-import {useEffect} from "react";
+import {createImageData, updateSizeInFooter} from "@/lib/features/paintSlice";
+import {ChangeEvent, useEffect} from "react";
 import {changeStatusBar, changeViewGridLine, changeViewRuler} from "@/lib/features/viewSlice";
 
 
@@ -43,8 +43,8 @@ const Navbar = () => {
     const createImage = () => {
         const canvas = document.createElement('canvas');
 
-        canvas.width = 800;  // Установите ширину
-        canvas.height = 800; // Установите высоту
+        // canvas.width = 800;  // Установите ширину
+        // canvas.height = 800; // Установите высоту
         const ctx = canvas.getContext('2d');
         if (ctx) {
             ctx.fillStyle = '#ffffff';
@@ -55,7 +55,6 @@ const Navbar = () => {
     }
 
     const download = (extension: string = 'png') => {
-
         if (refCanvas) {
             const link = document.createElement('a');
             const timestamp = new Date().toISOString().replace(/[:.-]/g, '');
@@ -85,10 +84,7 @@ const Navbar = () => {
         }
     }
 
-
-
     const showRulers = () => {
-        console.log(isRulerModal)
         dispatch(changeViewRuler(!isRulerModal));
     };
 
@@ -100,6 +96,29 @@ const Navbar = () => {
         dispatch(changeViewGridLine(!isGridLine));
     }
 
+    const openImage = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                if (e.target?.result) {
+                    let img = new Image();
+                    img.onload = function () {
+                        dispatch(updateSizeInFooter([img.width, img.height]));
+                    }
+                    dispatch(createImageData(e.target.result as string));
+                    img.src = e.target.result as string
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    const triggerFileInputClick = () => {
+        const fileInput = document.getElementById("upload-image") as HTMLInputElement;
+        if (fileInput) {
+            fileInput.click();
+        }
+    };
     return (
         <div className="p-2 border-0 navbar">
             <div className="d-grid d-inline-flex gap-1">
@@ -112,13 +131,25 @@ const Navbar = () => {
                         <li onClick={createImage} className="dropdown-item"><i className="bi bi-file-earmark me-3"></i>New
                             <span className="float-end d-inline ps-3">Ctrl+N</span>
                         </li>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={openImage}
+                            style={{display: 'none'}}
+                            id="upload-image"
+                        />
+                        <li onClick={triggerFileInputClick} className="dropdown-item"><i
+                            className="bi bi-folder2-open me-3"></i>Open
+                            <span className="float-end d-inline ps-3">Ctrl+O</span>
+                        </li>
                         <li onClick={() => download()} className="dropdown-item"><i className="bi bi-floppy me-3"></i>Save
                             <span className="float-end d-inline ps-3">Ctrl+S</span></li>
                         <li className="nav-item dropend">
                             <a className="nav-link dropdown-toggle ps-2 pe-2 pt-1 pb-1" href="#" role="button"
                                data-bs-toggle="dropdown"
                                aria-expanded="false">
-                                <i className="bi bi-floppy me-3"></i>Save As <i className="bi bi-chevron-right float-end pt-1 pb-1" style={{fontSize: '10px'}}></i>
+                                <i className="bi bi-floppy me-3"></i>Save As <i
+                                className="bi bi-chevron-right float-end pt-1 pb-1" style={{fontSize: '10px'}}></i>
                             </a>
                             <ul className="dropdown-menu bg-dark ">
                                 <li className="dropdown-item" onClick={() => download('png')}>PNG picture</li>
@@ -126,7 +157,8 @@ const Navbar = () => {
                                 <li className="dropdown-item" onClick={() => download('bmp')}>BMP picture</li>
                             </ul>
                         </li>
-                        <li onClick={printCanvas} className="dropdown-item"><i className="bi bi-printer me-3"></i>Print</li>
+                        <li onClick={printCanvas} className="dropdown-item"><i className="bi bi-printer me-3"></i>Print
+                        </li>
                     </ul>
                 </div>
                 <div className="dropdown">
